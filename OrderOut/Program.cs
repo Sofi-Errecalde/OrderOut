@@ -1,6 +1,5 @@
 using DBContext;
 using Microsoft.EntityFrameworkCore;
-using StudentApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
