@@ -2,7 +2,7 @@
 {
     public class BaseEntity
     {
-        public Guid Id { get; protected set; }
+        public int Id { get; protected set; }
         public DateTimeOffset CreatedOn { get; protected set; }
         public string CreatedBy { get; protected set; }
         public DateTimeOffset ModifiedOn { get; protected set; }

@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using OrderOut.Repositorys;
 using OrderOut.Dtos;
-
+using AutoMapper;
+using OrderOut.EF.Models;
 namespace OrderOut.Services
 {
     public class ProductService : IProductService
@@ -12,7 +13,7 @@ namespace OrderOut.Services
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
 
-        public OrderItemService(IProductRepository productRepository,
+        public ProductService(IProductRepository productRepository,
                                 IMapper mapper)
         {
             this._productRepository = productRepository;
@@ -25,24 +26,27 @@ namespace OrderOut.Services
             var response = _mapper.Map<ProductDto>(product);
             return response;
         }
-
+        /*
         public ProductDto GetAllProducts()
         {
 
 
-        }
+        }*/
 
-        public async Task<BaseResult<bool>> CreateProduct()
+        public async Task<bool> CreateProduct(ProductDto request)
         {
 
+            var newProduct = _mapper.Map<Product>(request);
+            var response = await _productRepository.CreateProduct(newProduct);
+            return response;
         }
-        public async Task<BaseResult<bool>> DeleteProduct()
+       /* public async Task<BaseResult<bool>> DeleteProduct()
         {
 
         }
         public async Task<BaseResult<bool>> UpdateProduct()
         {
 
-        }
+        }*/
     }
 }
