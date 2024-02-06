@@ -5,5 +5,8 @@ services:
     environment:
       SA_PASSWORD: 123qweASD.
       ACCEPT_EULA: Y
+      MSSQL_ENCRYPT: 0
+      MSSQL_PID: developer
+      MSSQL_TCP_PORT: 1433
     ports:
       - "1433:1433"

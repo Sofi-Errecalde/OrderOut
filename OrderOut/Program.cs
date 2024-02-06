@@ -1,6 +1,8 @@
 using AutoMapper;
 using DBContext;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using OrderOut.MappingProfile;
 using OrderOut.Repositorys;
 using OrderOut.Services;
@@ -17,7 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultValue")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Mapper
 var mapperConfig = new MapperConfiguration(mc =>

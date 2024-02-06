@@ -26,12 +26,14 @@ namespace OrderOut.Services
             var response = _mapper.Map<ProductDto>(product);
             return response;
         }
-        /*
-        public ProductDto GetAllProducts()
+        
+        public async Task<List<ProductDto>> GetAllProducts()
         {
+            var products = await _productRepository.GetAllProducts();
+            var response = _mapper.Map<List<ProductDto>>(products);
+            return response;
 
-
-        }*/
+        }
 
         public async Task<bool> CreateProduct(ProductDto request)
         {
@@ -40,13 +42,17 @@ namespace OrderOut.Services
             var response = await _productRepository.CreateProduct(newProduct);
             return response;
         }
-       /* public async Task<BaseResult<bool>> DeleteProduct()
-        {
 
-        }
-        public async Task<BaseResult<bool>> UpdateProduct()
-        {
+         public async Task<bool> DeleteProduct(int productId)
+         {
+            return await _productRepository.DeleteProduct(productId);
+         }
 
-        }*/
+         public async Task<bool> UpdateProduct(ProductDto request)
+         {
+            var product = _mapper.Map<Product>(request);
+            var response = await _productRepository.UpdateProduct(product);
+             return response;
+         }
     }
 }

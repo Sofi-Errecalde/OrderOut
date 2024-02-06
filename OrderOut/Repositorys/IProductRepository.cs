@@ -10,5 +10,8 @@ namespace OrderOut.Repositorys
     {
         Task<Product?> GetProduct(int productId);
         Task<bool> CreateProduct(Product newProduct);
+        Task<List<Product>> GetAllProducts();
+        Task<bool> DeleteProduct(int productId);
+        Task<bool> UpdateProduct(Product Product);
     }
 }

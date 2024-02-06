@@ -10,5 +10,8 @@ namespace OrderOut.Services
     {
         ProductDto GetProduct(int productId);
         Task<bool> CreateProduct(ProductDto request);
+        Task<List<ProductDto>> GetAllProducts();
+        Task<bool> DeleteProduct(int productId);
+        Task<bool> UpdateProduct(ProductDto request);
     }
 }

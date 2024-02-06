@@ -19,7 +19,7 @@ namespace OrderOut.Repositorys
         }
         public async Task<Product?> GetProduct(int productId)
         {
-            return await _appDbContext.Products.Where(x => x.Id == productId).FirstOrDefaultAsync();
+            return await _appDbContext.Products.Where(x => x.Id == productId && x.IsDeleted== false).FirstOrDefaultAsync();
 
         }
 
@@ -34,6 +34,44 @@ namespace OrderOut.Repositorys
             catch (Exception ex) 
             {
                 return false;   
+            }
+        }
+
+        public async Task<List<Product>> GetAllProducts()
+        {
+            return await _appDbContext.Products.Where(x =>x.IsDeleted == false).ToListAsync();
+
+        }
+
+        public async Task<bool> DeleteProduct(int productId)
+        {
+            var product = await _appDbContext.Products.Where(x => x.Id == productId).FirstOrDefaultAsync();
+            if (product != null)
+            {
+                try
+                {
+                    await _appDbContext.SaveChangesAsync();
+                    return true;
+                }
+                catch (Exception ex) {
+                    return false;
+                }
+            }
+           return false;
+
+        }
+
+        public async Task<bool> UpdateProduct(Product Product)
+        {
+            try
+            {
+                _appDbContext.Update(Product);
+                await _appDbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
     }
