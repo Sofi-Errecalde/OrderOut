@@ -1,13 +1,16 @@
-﻿namespace OrderOut.EF.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace OrderOut.EF.Models
 {
     public class BaseEntity
     {
-        public int Id { get; protected set; }
-        public DateTimeOffset CreatedOn { get; protected set; }
-        public string CreatedBy { get; protected set; }
-        public DateTimeOffset ModifiedOn { get; protected set; }
-        public string ModifiedBy { get; protected set; }
-        public bool IsDeleted { get; protected set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Id { get; set; }
+        public DateTimeOffset CreatedOn { get; set; }
+        public string? CreatedBy { get; set; }
+        public DateTimeOffset ModifiedOn { get; set; }
+        public string? ModifiedBy { get; set; }
+        public bool IsDeleted { get; set; }
 
     }
 }
