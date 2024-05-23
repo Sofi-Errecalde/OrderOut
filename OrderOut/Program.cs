@@ -1,27 +1,25 @@
 using AutoMapper;
 using DBContext;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using OrderOut;
 using OrderOut.MappingProfile;
 using OrderOut.Repositorys;
 using OrderOut.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Agrega servicios al contenedor.
 builder.Services.AddControllers();
 
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Configuración de Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Configuración de la base de datos
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Mapper
+// Configuración de AutoMapper
 var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new MappingProfile());
@@ -29,13 +27,29 @@ var mapperConfig = new MapperConfiguration(mc =>
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
-// Add your other services here
+// Agregar otros servicios
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 
+// Configuración de CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins(Constants.FrontendUrl).AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+            ;
+        });
+    options.AddPolicy(name: "MyAllowSpecificOrigins",
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:4200");
+                      });
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configuración del pipeline de solicitudes HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -43,6 +57,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+
+app.UseCors();
+app.UseCors("MyAllowSpecificOrigins");
+
 app.UseAuthorization();
+
 app.MapControllers();
+
 app.Run();

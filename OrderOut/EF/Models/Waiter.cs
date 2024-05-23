@@ -1,6 +1,6 @@
 ﻿namespace OrderOut.EF.Models
 {
-    public class Category : BaseEntity
+    public class Waiter : BaseEntity
     {
         public string Name { get; set; }
     }
