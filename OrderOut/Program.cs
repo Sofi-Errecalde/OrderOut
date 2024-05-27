@@ -4,7 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using OrderOut;
 using OrderOut.MappingProfile;
 using OrderOut.Repositorys;
-using OrderOut.Services;
+using OrderOut.Repositorys.product;
+using OrderOut.Services.category;
+using OrderOut.Services.order;
+using OrderOut.Services.product;
+using OrderOut.Services.role;
+using OrderOut.Services.table;
+using OrderOut.Services.user;
+using OrderOut.Services.waiter;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +37,24 @@ builder.Services.AddSingleton(mapper);
 // Agregar otros servicios
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
+
+builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+
+builder.Services.AddTransient<IRoleService, RoleService>();
+builder.Services.AddTransient<IRoleRepository, RoleRepository>();
+
+builder.Services.AddTransient<ITableService, TableService>();
+builder.Services.AddTransient<ITableRepository, TableRepository>();
+
+builder.Services.AddTransient<IWaiterService, WaiterService>();
+builder.Services.AddTransient<IWaiterRepository, WaiterRepository>();
+
+builder.Services.AddTransient<ICategoryService, CategoryService>();
+builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
+
+builder.Services.AddTransient<IOrderService, OrderService>();
+builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 
 // Configuración de CORS
 builder.Services.AddCors(options =>

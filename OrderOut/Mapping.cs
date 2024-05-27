@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using OrderOut.Dtos;
 using OrderOut.EF.Models;
 
 namespace OrderOut.MappingProfile
@@ -8,7 +7,7 @@ namespace OrderOut.MappingProfile
     {
         public MappingProfile()
         {
-            CreateMap<Product, ProductDto>().ReverseMap();
+            CreateMap<Product, Product>().ReverseMap();
         }
 
     }

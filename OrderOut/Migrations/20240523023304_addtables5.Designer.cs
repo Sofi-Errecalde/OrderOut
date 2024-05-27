@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace OrderOut.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240523013253_addtables")]
-    partial class Addtables
+    [Migration("20240523023304_addtables5")]
+    partial class addtables5
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

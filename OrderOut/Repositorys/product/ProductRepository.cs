@@ -7,7 +7,7 @@ using DBContext;
 using Microsoft.EntityFrameworkCore;
 using OrderOut.EF.Models;
 
-namespace OrderOut.Repositorys
+namespace OrderOut.Repositorys.product
 {
     public class ProductRepository : IProductRepository
     {
@@ -15,11 +15,11 @@ namespace OrderOut.Repositorys
 
         public ProductRepository(AppDbContext appDbContext)
         {
-            this._appDbContext = appDbContext;
+            _appDbContext = appDbContext;
         }
         public async Task<Product?> GetProduct(int productId)
         {
-            return await _appDbContext.Products.Where(x => x.Id == productId && x.IsDeleted== false).FirstOrDefaultAsync();
+            return await _appDbContext.Products.Where(x => x.Id == productId && x.IsDeleted == false).FirstOrDefaultAsync();
 
         }
 
@@ -31,15 +31,15 @@ namespace OrderOut.Repositorys
                 await _appDbContext.SaveChangesAsync();
                 return true;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                return false;   
+                return false;
             }
         }
 
         public async Task<List<Product>> GetAllProducts()
         {
-            return await _appDbContext.Products.Where(x =>x.IsDeleted == false).ToListAsync();
+            return await _appDbContext.Products.Where(x => x.IsDeleted == false).ToListAsync();
 
         }
 
@@ -53,11 +53,12 @@ namespace OrderOut.Repositorys
                     await _appDbContext.SaveChangesAsync();
                     return true;
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     return false;
                 }
             }
-           return false;
+            return false;
 
         }
 

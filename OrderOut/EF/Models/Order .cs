@@ -10,6 +10,5 @@
 
         public string PersonName { get; set; }
 
-        public ICollection<OrderProduct> OrderProducts { get; set; }
     }
 }

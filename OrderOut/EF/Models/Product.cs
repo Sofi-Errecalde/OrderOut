@@ -9,5 +9,6 @@
         public Category Category { get; set; }
         public bool IsVegan { get; set; }
         public bool IsGlutenFree { get; set; }
+
     }
 }

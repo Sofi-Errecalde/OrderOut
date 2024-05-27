@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OrderOut.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Repositorys;
-using OrderOut.Services;
+using OrderOut.Services.product;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +25,7 @@ namespace OrderOut.Controllers
 
         [HttpGet]
         [Route("GetProduct")]
-        public ProductDto GetProduct(int productId)
+        public Product GetProduct(int productId)
         {
             var response = _productService.GetProduct(productId);
 
@@ -35,16 +34,16 @@ namespace OrderOut.Controllers
 
         [HttpGet]
         [Route("AllProducts")]
-        public async Task<List<ProductDto>> AllProducts()
+        public List<Product> AllProducts()
         {
-            var response = await _productService.GetAllProducts();
+            var response = _productService.GetAllProducts();
 
             return response;
         }
 
         [HttpPost]
         [Route("CreateProduct")]
-        public async Task<bool> CreateProduct(ProductDto product)
+        public async Task<bool> CreateProduct(Product product)
         {
             var response = await _productService.CreateProduct(product);
 
@@ -54,7 +53,7 @@ namespace OrderOut.Controllers
         
         [HttpPut]
         [Route("UpdateProduct")]
-        public async Task<bool> UpdateProduct(ProductDto product)
+        public async Task<bool> UpdateProduct(Product product)
         {
             var response = await _productService.UpdateProduct(product);
 

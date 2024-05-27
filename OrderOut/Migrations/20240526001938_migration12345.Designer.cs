@@ -4,6 +4,7 @@ using DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace OrderOut.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240526001938_migration12345")]
+    partial class migration12345
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,12 +127,15 @@ namespace OrderOut.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("TableId")
+                    b.Property<int>("TableId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("TableId1")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TableId");
+                    b.HasIndex("TableId1");
 
                     b.ToTable("Orders");
                 });
@@ -377,43 +383,11 @@ namespace OrderOut.Migrations
                     b.ToTable("UsersRoles");
                 });
 
-            modelBuilder.Entity("OrderOut.EF.Models.Waiter", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("ModifiedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Waiters");
-                });
-
             modelBuilder.Entity("OrderOut.EF.Models.Order", b =>
                 {
                     b.HasOne("OrderOut.EF.Models.Table", "Table")
                         .WithMany("Orders")
-                        .HasForeignKey("TableId")
+                        .HasForeignKey("TableId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -423,13 +397,13 @@ namespace OrderOut.Migrations
             modelBuilder.Entity("OrderOut.EF.Models.OrderProduct", b =>
                 {
                     b.HasOne("OrderOut.EF.Models.Order", "Order")
-                        .WithMany()
+                        .WithMany("OrderProducts")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OrderOut.EF.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("OrderProducts")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -442,7 +416,7 @@ namespace OrderOut.Migrations
             modelBuilder.Entity("OrderOut.EF.Models.Product", b =>
                 {
                     b.HasOne("OrderOut.EF.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -461,13 +435,13 @@ namespace OrderOut.Migrations
             modelBuilder.Entity("OrderOut.EF.Models.UserRole", b =>
                 {
                     b.HasOne("OrderOut.EF.Models.Role", "Role")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OrderOut.EF.Models.User", "User")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -477,14 +451,39 @@ namespace OrderOut.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("OrderOut.EF.Models.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("OrderOut.EF.Models.Menu", b =>
                 {
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("OrderOut.EF.Models.Order", b =>
+                {
+                    b.Navigation("OrderProducts");
+                });
+
+            modelBuilder.Entity("OrderOut.EF.Models.Product", b =>
+                {
+                    b.Navigation("OrderProducts");
+                });
+
+            modelBuilder.Entity("OrderOut.EF.Models.Role", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
             modelBuilder.Entity("OrderOut.EF.Models.Table", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("OrderOut.EF.Models.User", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using OrderOut.Repositorys;
-using OrderOut.Dtos;
 using AutoMapper;
 using OrderOut.EF.Models;
-namespace OrderOut.Services
+using OrderOut.Repositorys.product;
+namespace OrderOut.Services.product
 {
     public class ProductService : IProductService
     {
@@ -16,26 +15,26 @@ namespace OrderOut.Services
         public ProductService(IProductRepository productRepository,
                                 IMapper mapper)
         {
-            this._productRepository = productRepository;
-            this._mapper = mapper;
+            _productRepository = productRepository;
+            _mapper = mapper;
         }
 
-        public ProductDto GetProduct(int productId)
+        public Product GetProduct(int productId)
         {
             var product = _productRepository.GetProduct(productId);
-            var response = _mapper.Map<ProductDto>(product);
+            var response = _mapper.Map<Product>(product);
             return response;
         }
-        
-        public async Task<List<ProductDto>> GetAllProducts()
+
+        public List<Product> GetAllProducts()
         {
-            var products = await _productRepository.GetAllProducts();
-            var response = _mapper.Map<List<ProductDto>>(products);
+            var products = _productRepository.GetAllProducts();
+            var response = _mapper.Map<List<Product>>(products);
             return response;
 
         }
 
-        public async Task<bool> CreateProduct(ProductDto request)
+        public async Task<bool> CreateProduct(Product request)
         {
 
             var newProduct = _mapper.Map<Product>(request);
@@ -43,16 +42,16 @@ namespace OrderOut.Services
             return response;
         }
 
-         public async Task<bool> DeleteProduct(int productId)
-         {
+        public async Task<bool> DeleteProduct(int productId)
+        {
             return await _productRepository.DeleteProduct(productId);
-         }
+        }
 
-         public async Task<bool> UpdateProduct(ProductDto request)
-         {
+        public async Task<bool> UpdateProduct(Product request)
+        {
             var product = _mapper.Map<Product>(request);
             var response = await _productRepository.UpdateProduct(product);
-             return response;
-         }
+            return response;
+        }
     }
 }

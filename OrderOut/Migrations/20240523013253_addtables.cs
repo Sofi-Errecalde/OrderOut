@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OrderOut.Migrations
 {
     /// <inheritdoc />
-    public partial class addtables : Migration
+    public partial class Addtables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
