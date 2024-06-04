@@ -25,16 +25,16 @@ namespace OrderOut.Controllers
 
         [HttpGet]
         [Route("GetProduct")]
-        public Product GetProduct(int productId)
+        public async Task<Product> GetProduct(int productId)
         {
-            var response = _productService.GetProduct(productId);
+            var response = await _productService.GetProduct(productId);
 
             return response;
         }
 
         [HttpGet]
         [Route("AllProducts")]
-        public List<Product> AllProducts()
+        public Task<List<Product>> AllProducts()
         {
             var response = _productService.GetAllProducts();
 

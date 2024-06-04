@@ -18,16 +18,16 @@ namespace OrderOut.Services.waiter
             _mapper = mapper;
         }
 
-        public  List<Waiter> GetAllWaiters()
+        public async Task<List<Waiter>> GetAllWaiters()
         {
-            var waiters = _waiterRepository.GetAllWaiters();
+            var waiters = await _waiterRepository.GetAllWaiters();
             var response = _mapper.Map<List<Waiter>>(waiters);
             return response;
         }
 
-        public Waiter GetWaiter(int waiterId)
+        public async Task<Waiter> GetWaiter(int waiterId)
         {
-            var waiter = _waiterRepository.GetWaiter(waiterId);
+            var waiter = await _waiterRepository.GetWaiter(waiterId);
             var response = _mapper.Map<Waiter>(waiter);
             return response;
         }

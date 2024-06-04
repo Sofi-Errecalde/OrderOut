@@ -17,16 +17,16 @@ namespace OrderOut.Controllers
 
         [HttpGet]
         [Route("GetTable")]
-        public Table GetTable(int tableId)
+        public async Task<Table> GetTable(int tableId)
         {
-            return _tableService.GetTable(tableId);
+            return await _tableService.GetTable(tableId);
         }
 
         [HttpGet]
         [Route("AllTables")]
-        public List<Table> AllTables()
+        public async Task<List<Table>> AllTables()
         {
-            return _tableService.GetAllTables();
+            return await _tableService.GetAllTables();
         }
 
         [HttpPost]

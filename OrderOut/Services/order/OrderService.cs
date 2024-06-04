@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using DBContext;
+using Microsoft.EntityFrameworkCore;
 using OrderOut.EF.Models;
 using OrderOut.Repositorys;
 
@@ -10,24 +12,26 @@ namespace OrderOut.Services.order
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
+        private readonly AppDbContext _context;
 
-        public OrderService(IOrderRepository orderRepository,
+        public OrderService(IOrderRepository orderRepository,AppDbContext context,
                             IMapper mapper)
         {
             _orderRepository = orderRepository;
             _mapper = mapper;
+            _context = context;
         }
 
-        public  List<Order> GetAllOrders()
+        public async Task<List<Order>> GetAllOrders()
         {
-            var orders =  _orderRepository.GetAllOrders();
+            var orders =  await _orderRepository.GetAllOrders();
             var response = _mapper.Map<List<Order>>(orders);
             return response;
         }
 
-        public  Order GetOrder(int orderId)
+        public async Task<Order> GetOrder(int orderId)
         {
-            var order =  _orderRepository.GetOrder(orderId);
+            var order =  await _orderRepository.GetOrder(orderId);
             var response = _mapper.Map<Order>(order);
             return response;
         }
@@ -36,6 +40,18 @@ namespace OrderOut.Services.order
         {
             var newOrder = _mapper.Map<Order>(request);
             var response = await _orderRepository.CreateOrder(newOrder);
+
+            if (response)
+            {
+                /*foreach (var productId in request)
+                {
+                    var orderProduct = new OrderProduct(newOrder,product);
+                    _context.OrderProducts.Add(orderProduct);
+                }*/
+
+                await _context.SaveChangesAsync();
+            }
+
             return response;
         }
 

@@ -18,16 +18,16 @@ namespace OrderOut.Services.role
             _mapper = mapper;
         }
 
-        public List<Role> GetAllRoles()
+        public async Task<List<Role>> GetAllRoles()
         {
-            var roles =  _roleRepository.GetAllRoles();
+            var roles =  await _roleRepository.GetAllRoles();
             var response = _mapper.Map<List<Role>>(roles);
             return response;
         }
 
-        public Role GetRole(int roleId)
+        public async Task<Role> GetRole(int roleId)
         {
-            var role = _roleRepository.GetRole(roleId);
+            var role = await _roleRepository.GetRole(roleId);
             var response = _mapper.Map<Role>(role);
             return response;
         }

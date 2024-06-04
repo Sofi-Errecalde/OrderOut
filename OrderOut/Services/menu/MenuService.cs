@@ -18,16 +18,16 @@ namespace OrderOut.Services.menu
             _mapper = mapper;
         }
 
-        public  List<Menu> GetAllMenus()
+        public async Task<List<Menu>> GetAllMenus()
         {
-            var menus =   _menuRepository.GetAllMenus();
+            var menus = await _menuRepository.GetAllMenus();
             var response = _mapper.Map<List<Menu>>(menus);
             return response;
         }
 
-        public  Menu GetMenu(int menuId)
+        public async Task<Menu> GetMenu(int menuId)
         {
-            var menu =   _menuRepository.GetMenu(menuId);
+            var menu = await _menuRepository.GetMenu(menuId);
             var response = _mapper.Map<Menu>(menu);
             return response;
         }

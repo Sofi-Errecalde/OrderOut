@@ -18,16 +18,16 @@ namespace OrderOut.Services.table
             _mapper = mapper;
         }
 
-        public List<Table> GetAllTables()
+        public async Task<List<Table>> GetAllTables()
         {
-            var tables = _tableRepository.GetAllTables();
+            var tables = await _tableRepository.GetAllTables();
             var response = _mapper.Map<List<Table>>(tables);
             return response;
         }
 
-        public Table GetTable(int tableId)
+        public async Task<Table> GetTable(int tableId)
         {
-            var table = _tableRepository.GetTable(tableId);
+            var table = await _tableRepository.GetTable(tableId);
             var response = _mapper.Map<Table>(table);
             return response;
         }

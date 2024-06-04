@@ -10,6 +10,6 @@ namespace OrderOut.Repositorys
         Task<Category?> GetCategory(int categoryId);
         Task<bool> CreateCategory(Category category);
         Task<bool> UpdateCategory(Category category);
-        Task<bool> DeleteCategory(int categoryId);
+        Task<bool> DeleteCategory(long categoryId);
     }
 }

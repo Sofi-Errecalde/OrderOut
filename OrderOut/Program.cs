@@ -6,6 +6,7 @@ using OrderOut.MappingProfile;
 using OrderOut.Repositorys;
 using OrderOut.Repositorys.product;
 using OrderOut.Services.category;
+using OrderOut.Services.menu;
 using OrderOut.Services.order;
 using OrderOut.Services.product;
 using OrderOut.Services.role;
@@ -55,6 +56,9 @@ builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 
 builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+
+builder.Services.AddTransient<IMenuService, MenuService>();
+builder.Services.AddTransient<IMenuRepository, MenuRepository>();
 
 // Configuración de CORS
 builder.Services.AddCors(options =>

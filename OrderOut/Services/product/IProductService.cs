@@ -8,9 +8,9 @@ namespace OrderOut.Services.product
 {
     public interface IProductService
     {
-        Product GetProduct(int productId);
+        Task<Product> GetProduct(int productId);
         Task<bool> CreateProduct(Product request);
-        List<Product> GetAllProducts();
+        Task<List<Product>> GetAllProducts();
         Task<bool> DeleteProduct(int productId);
         Task<bool> UpdateProduct(Product request);
     }

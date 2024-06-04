@@ -18,8 +18,7 @@ namespace OrderOut.Repositorys
 
         public async Task<List<Category>> GetAllCategories()
         {
-            return await _context.Categories.ToListAsync();
-        }
+            return await _context.Categories.Where(x => x.IsDeleted == false).ToListAsync()        }
 
         public async Task<Category?> GetCategory(int categoryId)
         {
@@ -40,15 +39,23 @@ namespace OrderOut.Repositorys
             return true;
         }
 
-        public async Task<bool> DeleteCategory(int categoryId)
+        public async Task<bool> DeleteCategory(long categoryId)
         {
-            var category = await _context.Categories.FindAsync(categoryId);
-            if (category == null)
-                return false;
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-            return true;
+            var category = await _context.Categories.Where(x => x.Id == categoryId).FirstOrDefaultAsync();
+            if (category != null)
+            {
+                try
+                {
+                    category.IsDeleted = true;
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+            return false;
         }
     }
 }

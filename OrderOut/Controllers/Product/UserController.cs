@@ -17,16 +17,16 @@ namespace OrderOut.Controllers
 
         [HttpGet]
         [Route("GetUser")]
-        public User GetUser(int userId)
+        public async Task<User> GetUser(int userId)
         {
-            return _userService.GetUser(userId);
+            return await _userService.GetUser(userId);
         }
 
         [HttpGet]
         [Route("AllUsers")]
-        public List<User> AllUsers()
+        public async Task<List<User>> AllUsers()
         {
-            return _userService.GetAllUsers();
+            return await _userService.GetAllUsers();
         }
 
         [HttpPost]

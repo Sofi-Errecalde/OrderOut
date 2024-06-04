@@ -19,16 +19,16 @@ namespace OrderOut.Services.product
             _mapper = mapper;
         }
 
-        public Product GetProduct(int productId)
+        public async Task<Product> GetProduct(int productId)
         {
-            var product = _productRepository.GetProduct(productId);
+            var product = await _productRepository.GetProduct(productId);
             var response = _mapper.Map<Product>(product);
             return response;
         }
 
-        public List<Product> GetAllProducts()
+        public async Task<List<Product>> GetAllProducts()
         {
-            var products = _productRepository.GetAllProducts();
+            var products = await _productRepository.GetAllProducts();
             var response = _mapper.Map<List<Product>>(products);
             return response;
 

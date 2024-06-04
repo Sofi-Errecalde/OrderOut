@@ -17,16 +17,16 @@ namespace OrderOut.Controllers
 
         [HttpGet]
         [Route("GetRole")]
-        public Role GetRole(int roleId)
+        public async Task<Role> GetRole(int roleId)
         {
-            return _roleService.GetRole(roleId);
+            return await _roleService.GetRole(roleId);
         }
 
         [HttpGet]
         [Route("AllRoles")]
-        public List<Role> AllRoles()
+        public async Task<List<Role>> AllRoles()
         {
-            return _roleService.GetAllRoles();
+            return await _roleService.GetAllRoles();
         }
 
         [HttpPost]

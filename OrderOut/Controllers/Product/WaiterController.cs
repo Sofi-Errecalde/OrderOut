@@ -17,16 +17,16 @@ namespace OrderOut.Controllers
 
         [HttpGet]
         [Route("GetWaiter")]
-        public Waiter GetWaiter(int waiterId)
+        public async Task<Waiter> GetWaiter(int waiterId)
         {
-            return _waiterService.GetWaiter(waiterId);
+            return await _waiterService.GetWaiter(waiterId);
         }
 
         [HttpGet]
         [Route("AllWaiters")]
-        public List<Waiter> AllWaiters()
+        public async Task<List<Waiter>> AllWaiters()
         {
-            return _waiterService.GetAllWaiters();
+            return await _waiterService.GetAllWaiters();
         }
 
         [HttpPost]

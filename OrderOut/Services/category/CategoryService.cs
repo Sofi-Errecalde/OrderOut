@@ -18,23 +18,23 @@ namespace OrderOut.Services.category
             _mapper = mapper;
         }
 
-        public List<Category>GetAllCategories()
+        public async Task<List<Category>> GetAllCategories()
         {
-            var categories =   _categoryRepository.GetAllCategories();
+            var categories =  await _categoryRepository.GetAllCategories();
             var response = _mapper.Map<List<Category>>(categories);
             return response;
         }
 
-        public Category GetCategory(int categoryId)
+        public async Task<Category> GetCategory(int categoryId)
         {
-            var category =   _categoryRepository.GetCategory(categoryId);
+            var category = await  _categoryRepository.GetCategory(categoryId);
             var response = _mapper.Map<Category>(category);
             return response;
         }
 
-        public Task<bool> CreateCategory(Category request)
+        public  Task<bool> CreateCategory(Category request)
         {
-            var newCategory = _mapper.Map<Category>(request);
+            var newCategory =  _mapper.Map<Category>(request);
             var response =   _categoryRepository.CreateCategory(newCategory);
             return response;
         }
@@ -46,7 +46,7 @@ namespace OrderOut.Services.category
             return response;
         }
 
-        public Task<bool> DeleteCategory(int categoryId)
+        public Task<bool> DeleteCategory(long categoryId)
         {
             var response =   _categoryRepository.DeleteCategory(categoryId);
             return response;

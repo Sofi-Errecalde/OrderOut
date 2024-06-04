@@ -17,16 +17,16 @@ namespace OrderOut.Controllers
 
         [HttpGet]
         [Route("GetMenu")]
-        public Menu GetMenu(int menuId)
+        public async Task<Menu> GetMenu(int menuId)
         {
-            return _menuService.GetMenu(menuId);
+            return await _menuService.GetMenu(menuId);
         }
 
         [HttpGet]
         [Route("AllMenus")]
-        public  List<Menu> AllMenus()
+        public async Task<List<Menu>> AllMenus()
         {
-            return   _menuService.GetAllMenus();
+            return await _menuService.GetAllMenus();
         }
 
         [HttpPost]

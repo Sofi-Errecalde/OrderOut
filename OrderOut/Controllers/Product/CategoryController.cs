@@ -17,16 +17,16 @@ namespace OrderOut.Controllers
 
         [HttpGet]
         [Route("GetCategory")]
-        public Category GetCategory(int categoryId)
+        public async Task<Category> GetCategory(int categoryId)
         {
-            return _categoryService.GetCategory(categoryId);
+            return await _categoryService.GetCategory(categoryId);
         }
 
         [HttpGet]
         [Route("AllCategories")]
-        public List<Category> AllCategories()
+        public async Task<List<Category>> AllCategories()
         {
-            return  _categoryService.GetAllCategories();
+            return  await _categoryService.GetAllCategories();
         }
 
         [HttpPost]
@@ -45,7 +45,7 @@ namespace OrderOut.Controllers
 
         [HttpDelete]
         [Route("DeleteCategory")]
-        public Task<bool> DeleteCategory(int categoryId)
+        public Task<bool> DeleteCategory(long categoryId)
         {
             return  _categoryService.DeleteCategory(categoryId);
         }
