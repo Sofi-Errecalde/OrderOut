@@ -18,7 +18,7 @@ namespace OrderOut.Repositorys
 
         public async Task<List<Category>> GetAllCategories()
         {
-            return await _context.Categories.Where(x => x.IsDeleted == false).ToListAsync()        }
+            return await _context.Categories.Where(x => x.IsDeleted == false).ToListAsync();       }
 
         public async Task<Category?> GetCategory(int categoryId)
         {
