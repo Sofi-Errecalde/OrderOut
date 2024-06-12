@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Repositorys;
 
@@ -32,10 +33,23 @@ namespace OrderOut.Services.role
             return response;
         }
 
-        public async Task<bool> CreateRole(Role request)
+        public async Task<Role> GetRoleByName(string roleName)
+        {
+            var role = await _roleRepository.GetRoleByName(roleName);
+            var response = _mapper.Map<Role>(role);
+            return response;
+        }
+
+        public async Task<bool> CreateRole(RoleDto request)
         {
             var newRole = _mapper.Map<Role>(request);
             var response = await _roleRepository.CreateRole(newRole);
+            return response;
+        }
+        public async Task<bool> CreateUserRole(UserRole request)
+        {
+            var newUserRole = _mapper.Map<UserRole>(request);
+            var response = await _roleRepository.CreateUserRole(newUserRole);
             return response;
         }
 

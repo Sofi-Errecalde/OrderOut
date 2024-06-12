@@ -26,9 +26,21 @@ namespace OrderOut.Repositorys
             return await _context.Roles.Where(x => x.Id == roleId && !x.IsDeleted).FirstOrDefaultAsync();
         }
 
+        public async Task<Role?> GetRoleByName(string roleName)
+        {
+            return await _context.Roles.Where(x => x.Name == roleName && !x.IsDeleted).FirstOrDefaultAsync();
+        }
+
         public async Task<bool> CreateRole(Role role)
         {
             _context.Roles.Add(role);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> CreateUserRole(UserRole userRole)
+        {
+            _context.UsersRoles.Add(userRole);
             await _context.SaveChangesAsync();
             return true;
         }

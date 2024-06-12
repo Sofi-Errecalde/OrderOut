@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 
 namespace OrderOut.Services.role
@@ -8,7 +9,9 @@ namespace OrderOut.Services.role
     {
         Task<List<Role>> GetAllRoles();
         Task<Role> GetRole(int roleId);
-        Task<bool> CreateRole(Role request);
+        Task<Role> GetRoleByName(string roleName);
+        Task<bool> CreateRole(RoleDto request);
+        Task<bool> CreateUserRole(UserRole request);
         Task<bool> UpdateRole(Role request);
         Task<bool> DeleteRole(int roleId);
     }

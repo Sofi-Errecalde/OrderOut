@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Services.role;
 
@@ -16,13 +18,15 @@ namespace OrderOut.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("GetRole")]
         public async Task<Role> GetRole(int roleId)
         {
             return await _roleService.GetRole(roleId);
         }
-
+        
         [HttpGet]
+        [Authorize]
         [Route("AllRoles")]
         public async Task<List<Role>> AllRoles()
         {
@@ -31,7 +35,7 @@ namespace OrderOut.Controllers
 
         [HttpPost]
         [Route("CreateRole")]
-        public async Task<bool> CreateRole(Role role)
+        public async Task<bool> CreateRole(RoleDto role)
         {
             return await _roleService.CreateRole(role);
         }

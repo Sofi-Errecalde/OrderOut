@@ -23,7 +23,12 @@ namespace OrderOut.Repositorys
 
         public async Task<User?> GetUser(int userId)
         {
-            return await _context.Users.Where(x => x.Id == userId && x.IsDeleted).FirstOrDefaultAsync();
+            return await _context.Users.Where(x => x.Id == userId && !x.IsDeleted).FirstOrDefaultAsync();
+        }
+
+        public async Task<User?> GetUserByEmail(string userEmail)
+        {
+            return await _context.Users.Where(x => x.Email == userEmail && !x.IsDeleted).FirstOrDefaultAsync();
         }
 
         public async Task<bool> CreateUser(User user)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Services.user;
 
@@ -30,8 +31,15 @@ namespace OrderOut.Controllers
         }
 
         [HttpPost]
+        [Route("Login")]
+        public async Task<LoginDto> Login(UserDto request)
+        {
+            return await _userService.Login(request);
+        }
+
+        [HttpPost]
         [Route("CreateUser")]
-        public async Task<bool> CreateUser(User user)
+        public async Task<bool> CreateUser(UserDto user)
         {
             return await _userService.CreateUser(user);
         }
