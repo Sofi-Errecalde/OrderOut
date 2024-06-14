@@ -21,9 +21,9 @@ namespace OrderOut.Repositorys
             return await _context.Categories.Where(x => x.IsDeleted == false).ToListAsync();
         }
 
-        public async Task<Category?> GetCategory(int categoryId)
+        public async Task<Category?> GetCategory(long categoryId)
         {
-            return await _context.Categories.Where(x => x.Id == categoryId && x.IsDeleted).FirstOrDefaultAsync();
+            return await _context.Categories.Where(x => x.Id == categoryId && !x.IsDeleted).FirstOrDefaultAsync();
         }
 
         public async Task<bool> CreateCategory(Category category)

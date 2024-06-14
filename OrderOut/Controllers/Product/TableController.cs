@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Services.table;
 
@@ -31,9 +32,16 @@ namespace OrderOut.Controllers
 
         [HttpPost]
         [Route("CreateTable")]
-        public async Task<bool> CreateTable(Table table)
+        public async Task<bool> CreateTable(TableDto table)
         {
             return await _tableService.CreateTable(table);
+        }
+
+        [HttpPost]
+        [Route("AssignTablesToWaiters")]
+        public async Task<bool> AssignTablesToWaiters(TableWaiterDto table)
+        {
+            return await _tableService.AssignTablesToWaiters(table);
         }
 
         [HttpPut]

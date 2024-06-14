@@ -16,7 +16,5 @@ namespace OrderOut.EF.Models
         [ForeignKey("RoleId")]
         public virtual Role Role { get; set; }
 
-
-
     }
 }

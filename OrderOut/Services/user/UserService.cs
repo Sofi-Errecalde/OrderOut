@@ -52,7 +52,7 @@ namespace OrderOut.Services.user
             return response;
         }
 
-        public async Task<bool> CreateUser(UserDto request)
+        public async Task<bool> CreateUser(CreateUserDto request)
         {
 
             var exist = await _userRepository.GetUserByEmail(request.Email);
@@ -74,7 +74,7 @@ namespace OrderOut.Services.user
             return response;
         }
 
-        public async Task<LoginDto> Login(UserDto request)
+        public async Task<LoginDto> Login(CreateUserDto request)
         {
             var user = await _userRepository.GetUserByEmail(request.Email);
             var passwordHasher = new PasswordHasher<User>();
@@ -94,15 +94,24 @@ namespace OrderOut.Services.user
                 Expires = DateTime.UtcNow.AddDays(_authSettings.Value.TokenDays),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
+            var roles = new List<UserRoleDto>();
+            foreach(var role in user.UsersRoles)
+            {
+                tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, role.Role.Name));
+                roles.Add(new UserRoleDto {Id= role.Id, Name=role.Role.Name });
+            }
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
             var response = new LoginDto
             {
                 AccessToken = tokenString,
-                User = user
-                
+                User = new UserLoginResponseDto { 
+                    Name = user.Name,
+                    Email = user.Email,
+                    Id = user.Id,
+                    UsersRoles = roles
+                }               
             };
-
             return response;
         }
 

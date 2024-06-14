@@ -34,6 +34,13 @@ namespace OrderOut.Repositorys
             return true;
         }
 
+        public async Task<bool> AssignTablesToWaiters(TableWaiter tableWaiter)
+        {
+            _context.TablesWaiters.Add(tableWaiter);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<bool> UpdateTable(Table table)
         {
             _context.Entry(table).State = EntityState.Modified;

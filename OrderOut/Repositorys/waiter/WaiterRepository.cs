@@ -35,18 +35,17 @@ namespace OrderOut.Repositorys
 
         public async Task<bool> UpdateWaiter(Waiter waiter)
         {
-            _context.Entry(waiter).State = EntityState.Modified;
+           _context.Update(waiter);
             await _context.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> DeleteWaiter(int waiterId)
         {
-            var waiter = await _context.Waiters.FindAsync(waiterId);
+            var waiter = await _context.Waiters.Where(x => x.Id == waiterId).FirstOrDefaultAsync();
             if (waiter == null)
                 return false;
-
-            _context.Waiters.Remove(waiter);
+            waiter.IsDeleted = true;
             await _context.SaveChangesAsync();
             return true;
         }

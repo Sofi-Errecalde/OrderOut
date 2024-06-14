@@ -28,7 +28,7 @@ namespace OrderOut.Repositorys
 
         public async Task<User?> GetUserByEmail(string userEmail)
         {
-            return await _context.Users.Where(x => x.Email == userEmail && !x.IsDeleted).FirstOrDefaultAsync();
+            return await _context.Users.Include(x => x.UsersRoles).ThenInclude(x => x.Role).FirstOrDefaultAsync(x => x.Email == userEmail && !x.IsDeleted);
         }
 
         public async Task<bool> CreateUser(User user)

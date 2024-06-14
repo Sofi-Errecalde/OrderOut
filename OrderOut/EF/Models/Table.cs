@@ -2,9 +2,8 @@
 {
     public class Table : BaseEntity
     {
-        public string Number { get; set; }
-        public string status { get; set; }
+        public int AmountPeople { get; set; }
+        public int State { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
-
     }
 }

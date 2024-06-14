@@ -3,5 +3,6 @@
     public class Waiter : BaseEntity
     {
         public string Name { get; set; }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 
 namespace OrderOut.Services.table
@@ -8,7 +9,8 @@ namespace OrderOut.Services.table
     {
         Task<List<Table>> GetAllTables();
         Task<Table> GetTable(int tableId);
-        Task<bool> CreateTable(Table request);
+        Task<bool> CreateTable(TableDto request);
+        Task<bool> AssignTablesToWaiters(TableWaiterDto request);
         Task<bool> UpdateTable(Table request);
         Task<bool> DeleteTable(int tableId);
     }

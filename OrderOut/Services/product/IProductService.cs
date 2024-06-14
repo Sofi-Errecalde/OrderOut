@@ -1,4 +1,5 @@
-﻿using OrderOut.EF.Models;
+﻿using OrderOut.DtosOU.Dtos;
+using OrderOut.EF.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace OrderOut.Services.product
     public interface IProductService
     {
         Task<Product> GetProduct(int productId);
-        Task<bool> CreateProduct(Product request);
+        Task<bool> CreateProduct(ProductDto request);
         Task<List<Product>> GetAllProducts();
+        Task<List<Product>> GetProductByCategory(int categoryId);
         Task<bool> DeleteProduct(int productId);
-        Task<bool> UpdateProduct(Product request);
+        Task<bool> UpdateProduct(ProductDto request);
     }
 }

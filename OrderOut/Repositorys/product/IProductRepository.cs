@@ -11,6 +11,7 @@ namespace OrderOut.Repositorys.product
         Task<Product?> GetProduct(int productId);
         Task<bool> CreateProduct(Product newProduct);
         Task<List<Product>> GetAllProducts();
+        Task<List<Product>> GetProductByCategory(int categoryId);
         Task<bool> DeleteProduct(int productId);
         Task<bool> UpdateProduct(Product Product);
     }

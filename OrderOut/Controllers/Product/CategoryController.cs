@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Services.category;
 
@@ -31,7 +32,7 @@ namespace OrderOut.Controllers
 
         [HttpPost]
         [Route("CreateCategory")]
-        public Task<bool> CreateCategory(Category category)
+        public Task<bool> CreateCategory(CategoryDto category)
         {
             return  _categoryService.CreateCategory(category);
         }
@@ -45,7 +46,7 @@ namespace OrderOut.Controllers
 
         [HttpDelete]
         [Route("DeleteCategory")]
-        public Task<bool> DeleteCategory(long categoryId)
+        public Task<bool> DeleteCategory(int categoryId)
         {
             return  _categoryService.DeleteCategory(categoryId);
         }

@@ -9,6 +9,7 @@ namespace OrderOut.Repositorys
         Task<List<Table>> GetAllTables();
         Task<Table?> GetTable(int tableId);
         Task<bool> CreateTable(Table table);
+        Task<bool> AssignTablesToWaiters(TableWaiter tableWaiter);
         Task<bool> UpdateTable(Table table);
         Task<bool> DeleteTable(int tableId);
     }

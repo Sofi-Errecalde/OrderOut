@@ -6,6 +6,6 @@ namespace OrderOut.DtosOU.Dtos
     {
         public string AccessToken { get; set; }
         
-        public User User { get; set; }
+        public UserLoginResponseDto User { get; set; }
     }
 }

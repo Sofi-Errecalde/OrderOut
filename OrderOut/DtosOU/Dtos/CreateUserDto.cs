@@ -1,6 +1,6 @@
 ﻿namespace OrderOut.DtosOU.Dtos
 {
-    public class UserDto
+    public class CreateUserDto
     {
         public string Name { get; set; }
         public string Email { get; set; }

@@ -8,9 +8,12 @@ namespace OrderOut.MappingProfile
     {
         public MappingProfile()
         {
-            CreateMap<Product, Product>().ReverseMap();
+            CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<Role, RoleDto>().ReverseMap();
-            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<User, CreateUserDto>().ReverseMap();
+            CreateMap<Category, CategoryDto>().ReverseMap();
+            CreateMap<Table, TableDto>().ReverseMap();
+            CreateMap<TableWaiter, TableWaiterDto>().ReverseMap();
         }
 
     }

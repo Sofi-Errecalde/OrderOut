@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
+using OrderOut.Enums;
 using OrderOut.Repositorys;
 
 namespace OrderOut.Services.table
@@ -32,7 +34,15 @@ namespace OrderOut.Services.table
             return response;
         }
 
-        public async Task<bool> CreateTable(Table request)
+        public async Task<bool> CreateTable(TableDto request)
+        {
+            var newTable = _mapper.Map<Table>(request);
+            newTable.State = (int)TableState.Libre;
+            var response = await _tableRepository.CreateTable(newTable);
+            return response;
+        }
+
+        public async Task<bool> AssignTablesToWaiters(TableWaiterDto request)
         {
             var newTable = _mapper.Map<Table>(request);
             var response = await _tableRepository.CreateTable(newTable);

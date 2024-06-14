@@ -27,7 +27,7 @@ namespace OrderOut.Repositorys.product
         {
             try
             {
-                await _appDbContext.AddAsync(newProduct);
+                _appDbContext.Add(newProduct);
                 await _appDbContext.SaveChangesAsync();
                 return true;
             }
@@ -43,13 +43,20 @@ namespace OrderOut.Repositorys.product
 
         }
 
+        public async Task<List<Product>> GetProductByCategory(int categoryId)
+        {
+            return await _appDbContext.Products.Where(x => x.CategoryId == categoryId && x.IsDeleted == false).ToListAsync();
+
+        }
+
         public async Task<bool> DeleteProduct(int productId)
         {
             var product = await _appDbContext.Products.Where(x => x.Id == productId).FirstOrDefaultAsync();
             if (product != null)
             {
                 try
-                {
+                {   
+                    product.IsDeleted = true;
                     await _appDbContext.SaveChangesAsync();
                     return true;
                 }

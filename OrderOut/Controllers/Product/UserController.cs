@@ -32,14 +32,14 @@ namespace OrderOut.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public async Task<LoginDto> Login(UserDto request)
+        public async Task<LoginDto> Login(CreateUserDto request)
         {
             return await _userService.Login(request);
         }
 
         [HttpPost]
         [Route("CreateUser")]
-        public async Task<bool> CreateUser(UserDto user)
+        public async Task<bool> CreateUser(CreateUserDto user)
         {
             return await _userService.CreateUser(user);
         }

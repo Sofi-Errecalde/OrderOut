@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Repositorys;
 
@@ -25,14 +26,14 @@ namespace OrderOut.Services.category
             return response;
         }
 
-        public async Task<Category> GetCategory(int categoryId)
+        public async Task<Category> GetCategory(long categoryId)
         {
             var category = await  _categoryRepository.GetCategory(categoryId);
             var response = _mapper.Map<Category>(category);
             return response;
         }
 
-        public  Task<bool> CreateCategory(Category request)
+        public  Task<bool> CreateCategory(CategoryDto request)
         {
             var newCategory =  _mapper.Map<Category>(request);
             var response =   _categoryRepository.CreateCategory(newCategory);

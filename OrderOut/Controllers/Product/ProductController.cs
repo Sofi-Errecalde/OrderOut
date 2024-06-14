@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Repositorys;
 using OrderOut.Services.product;
@@ -21,8 +23,8 @@ namespace OrderOut.Controllers
         {
             this._productService = productService;
         }
-        
 
+        //[Authorize(Policy = "Usuario")]
         [HttpGet]
         [Route("GetProduct")]
         public async Task<Product> GetProduct(int productId)
@@ -41,9 +43,18 @@ namespace OrderOut.Controllers
             return response;
         }
 
+        [HttpGet]
+        [Route("GetProductByCategory")]
+        public async Task<List<Product>> GetProductByCategory(int categoryId)
+        {
+            var response = await _productService.GetProductByCategory(categoryId);
+
+            return response;
+        }
+
         [HttpPost]
         [Route("CreateProduct")]
-        public async Task<bool> CreateProduct(Product product)
+        public async Task<bool> CreateProduct(ProductDto product)
         {
             var response = await _productService.CreateProduct(product);
 
@@ -53,7 +64,7 @@ namespace OrderOut.Controllers
         
         [HttpPut]
         [Route("UpdateProduct")]
-        public async Task<bool> UpdateProduct(Product product)
+        public async Task<bool> UpdateProduct(ProductDto product)
         {
             var response = await _productService.UpdateProduct(product);
 

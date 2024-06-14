@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Repositorys.product;
 namespace OrderOut.Services.product
@@ -34,7 +35,14 @@ namespace OrderOut.Services.product
 
         }
 
-        public async Task<bool> CreateProduct(Product request)
+        public async Task<List<Product>> GetProductByCategory(int categoryId)
+        {
+            var product = await _productRepository.GetProductByCategory(categoryId);
+            var response = _mapper.Map<List<Product>>(product);
+            return response;
+        }
+
+        public async Task<bool> CreateProduct(ProductDto request)
         {
 
             var newProduct = _mapper.Map<Product>(request);
@@ -47,7 +55,7 @@ namespace OrderOut.Services.product
             return await _productRepository.DeleteProduct(productId);
         }
 
-        public async Task<bool> UpdateProduct(Product request)
+        public async Task<bool> UpdateProduct(ProductDto request)
         {
             var product = _mapper.Map<Product>(request);
             var response = await _productRepository.UpdateProduct(product);

@@ -46,7 +46,7 @@ namespace OrderOut.Controllers
         [HttpDelete]
         [Route("DeleteWaiter")]
         public async Task<bool> DeleteWaiter(int waiterId)
-        {
+        {   
             return await _waiterService.DeleteWaiter(waiterId);
         }
     }

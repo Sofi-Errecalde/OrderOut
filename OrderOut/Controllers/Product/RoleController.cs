@@ -18,7 +18,7 @@ namespace OrderOut.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize(Policy="Usuario")]
         [Route("GetRole")]
         public async Task<Role> GetRole(int roleId)
         {
@@ -26,7 +26,7 @@ namespace OrderOut.Controllers
         }
         
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         [Route("AllRoles")]
         public async Task<List<Role>> AllRoles()
         {
