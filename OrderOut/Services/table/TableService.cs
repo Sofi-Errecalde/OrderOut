@@ -49,7 +49,7 @@ namespace OrderOut.Services.table
             return response;
         }
 
-        public async Task<bool> UpdateTable(Table request)
+        public async Task<bool> UpdateTable(TableDto request)
         {
             var table = _mapper.Map<Table>(request);
             var response = await _tableRepository.UpdateTable(table);

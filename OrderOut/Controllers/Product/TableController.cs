@@ -46,7 +46,7 @@ namespace OrderOut.Controllers
 
         [HttpPut]
         [Route("UpdateTable")]
-        public async Task<bool> UpdateTable(Table table)
+        public async Task<bool> UpdateTable(TableDto table)
         {
             return await _tableService.UpdateTable(table);
         }

@@ -24,7 +24,7 @@ namespace OrderOut.Repositorys
 
         public async Task<Table?> GetTable(int tableId)
         {
-            return await _context.Tables.Where(x => x.Id == tableId && x.IsDeleted).FirstOrDefaultAsync();
+            return await _context.Tables.Where(x => x.Id == tableId && !x.IsDeleted).FirstOrDefaultAsync();
         }
 
         public async Task<bool> CreateTable(Table table)
@@ -50,11 +50,11 @@ namespace OrderOut.Repositorys
 
         public async Task<bool> DeleteTable(int tableId)
         {
-            var table = await _context.Tables.FindAsync(tableId);
+            var table = await _context.Tables.Where(x=> x.Id == tableId && !x.IsDeleted).FirstOrDefaultAsync();
             if (table == null)
                 return false;
-
-            _context.Tables.Remove(table);
+            table.IsDeleted = true;
+            _context.Tables.Update(table);
             await _context.SaveChangesAsync();
             return true;
         }

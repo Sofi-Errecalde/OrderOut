@@ -57,6 +57,7 @@ namespace OrderOut.Repositorys.product
                 try
                 {   
                     product.IsDeleted = true;
+                    _appDbContext.Products.Update(product);
                     await _appDbContext.SaveChangesAsync();
                     return true;
                 }
