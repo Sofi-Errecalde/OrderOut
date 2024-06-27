@@ -14,6 +14,7 @@ namespace OrderOut.MappingProfile
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<Table, TableDto>().ReverseMap();
             CreateMap<TableWaiter, TableWaiterDto>().ReverseMap();
+            CreateMap<Order, NewOrderDto>().ReverseMap();
         }
 
     }

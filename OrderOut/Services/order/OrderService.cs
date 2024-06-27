@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DBContext;
 using Microsoft.EntityFrameworkCore;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Repositorys;
 
@@ -36,10 +37,18 @@ namespace OrderOut.Services.order
             return response;
         }
 
-        public async Task<bool> CreateOrder(Order request)
+        public async Task<bool> CreateOrder(NewOrderDto request)
         {
             var newOrder = _mapper.Map<Order>(request);
-            var response = await _orderRepository.CreateOrder(newOrder);
+            var orderProducts = new List<OrderProduct>();
+            foreach (var product in request.OrdersProducts)
+            {
+                 var addProduct= new OrderProduct();
+                addProduct.ProductId = product.ProductId;
+                addProduct.Clarification = product.Clarification;
+                orderProducts.Add(addProduct);
+            }
+            var response = await _orderRepository.CreateOrder(newOrder,orderProducts);
 
             if (response)
             {

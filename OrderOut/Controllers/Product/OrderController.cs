@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Services.order;
 
@@ -31,7 +32,7 @@ namespace OrderOut.Controllers
 
         [HttpPost]
         [Route("CreateOrder")]
-        public async Task<bool> CreateOrder(Order order)
+        public async Task<bool> CreateOrder(NewOrderDto order)
         {
             return await _orderService.CreateOrder(order);
         }

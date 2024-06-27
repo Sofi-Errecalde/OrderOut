@@ -3,7 +3,8 @@
 namespace OrderOut.DtosOU.Dtos
 {
     public class TableWaiterDto
-    {
+    {   
+        public long Id { get; set; }    
         [NotNull]
         public long TableId { get; set; }
         [NotNull]

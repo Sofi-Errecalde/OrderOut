@@ -8,7 +8,7 @@ namespace OrderOut.Repositorys
     {
         Task<List<Order>> GetAllOrders();
         Task<Order?> GetOrder(int orderId);
-        Task<bool> CreateOrder(Order order);
+        Task<bool> CreateOrder(Order order, List<OrderProduct> products);
         Task<bool> UpdateOrder(Order order);
         Task<bool> DeleteOrder(int orderId);
     }

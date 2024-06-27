@@ -17,6 +17,7 @@ using OrderOut.Services.order;
 using OrderOut.Services.product;
 using OrderOut.Services.role;
 using OrderOut.Services.table;
+using OrderOut.Services.tableWaiter;
 using OrderOut.Services.user;
 using OrderOut.Services.waiter;
 using System.Text;
@@ -100,6 +101,10 @@ builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 
 builder.Services.AddTransient<IMenuService, MenuService>();
 builder.Services.AddTransient<IMenuRepository, MenuRepository>();
+
+builder.Services.AddTransient<ITableWaiterService, TableWaiterService>();
+builder.Services.AddTransient<ITableWaiterRepository, TableWaiterRepository>();
+
 
 // Configuración de CORS
 builder.Services.AddCors(options =>

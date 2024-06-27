@@ -26,9 +26,12 @@ namespace OrderOut.Repositorys
             return await _context.Orders.Where(x => x.Id == orderId && x.IsDeleted).FirstOrDefaultAsync();
         }
 
-        public async Task<bool> CreateOrder(Order order)
-        {
+        public async Task<bool> CreateOrder(Order order, List<OrderProduct> products)
+        {   
             _context.Orders.Add(order);
+            foreach(var product in products)
+            { product.OrderId= order.Id; }
+            _context.AddRange(products);
             await _context.SaveChangesAsync();
             return true;
         }

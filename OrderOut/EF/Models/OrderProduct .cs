@@ -10,6 +10,10 @@ namespace OrderOut.EF.Models
         [NotNull]
         public long ProductId { get; set; }
 
+        public int Amount { get; set; }
+
+        public string Clarification { get; set; }
+
         [ForeignKey("OrderId")]
         public virtual Order Order { get; set; }
 

@@ -51,7 +51,7 @@ namespace OrderOut.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.Menu", b =>
@@ -87,7 +87,7 @@ namespace OrderOut.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Menus");
+                    b.ToTable("Menus", (string)null);
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.Order", b =>
@@ -131,7 +131,7 @@ namespace OrderOut.Migrations
 
                     b.HasIndex("TableId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.OrderProduct", b =>
@@ -169,7 +169,7 @@ namespace OrderOut.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderProducts");
+                    b.ToTable("OrderProducts", (string)null);
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.Product", b =>
@@ -228,7 +228,7 @@ namespace OrderOut.Migrations
 
                     b.HasIndex("MenuId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.Role", b =>
@@ -260,7 +260,7 @@ namespace OrderOut.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.Table", b =>
@@ -294,7 +294,7 @@ namespace OrderOut.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tables");
+                    b.ToTable("Tables", (string)null);
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.TableWaiter", b =>
@@ -338,7 +338,7 @@ namespace OrderOut.Migrations
 
                     b.HasIndex("WaiterId");
 
-                    b.ToTable("TablesWaiters");
+                    b.ToTable("TablesWaiters", (string)null);
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.User", b =>
@@ -378,7 +378,7 @@ namespace OrderOut.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.UserRole", b =>
@@ -416,7 +416,7 @@ namespace OrderOut.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersRoles");
+                    b.ToTable("UsersRoles", (string)null);
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.Waiter", b =>
@@ -448,7 +448,7 @@ namespace OrderOut.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Waiters");
+                    b.ToTable("Waiters", (string)null);
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.Order", b =>
