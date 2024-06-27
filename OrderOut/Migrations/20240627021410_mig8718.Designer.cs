@@ -4,6 +4,7 @@ using DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace OrderOut.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240627021410_mig8718")]
+    partial class mig8718
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,7 +266,12 @@ namespace OrderOut.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Roles");
                 });
@@ -415,14 +423,9 @@ namespace OrderOut.Migrations
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<long?>("UserId1")
-                        .HasColumnType("bigint");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("UsersRoles");
                 });
@@ -510,6 +513,13 @@ namespace OrderOut.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("OrderOut.EF.Models.Role", b =>
+                {
+                    b.HasOne("OrderOut.EF.Models.User", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("OrderOut.EF.Models.TableWaiter", b =>
                 {
                     b.HasOne("OrderOut.EF.Models.Table", "Table")
@@ -543,10 +553,6 @@ namespace OrderOut.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OrderOut.EF.Models.User", null)
-                        .WithMany("UsersRoles")
-                        .HasForeignKey("UserId1");
-
                     b.Navigation("Role");
 
                     b.Navigation("User");
@@ -564,7 +570,7 @@ namespace OrderOut.Migrations
 
             modelBuilder.Entity("OrderOut.EF.Models.User", b =>
                 {
-                    b.Navigation("UsersRoles");
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }
