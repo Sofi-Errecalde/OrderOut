@@ -4,6 +4,7 @@ using DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace OrderOut.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240627021410_mig8718")]
+    partial class mig8718
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +54,7 @@ namespace OrderOut.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.Menu", b =>
@@ -87,7 +90,7 @@ namespace OrderOut.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Menus", (string)null);
+                    b.ToTable("Menus");
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.Order", b =>
@@ -133,7 +136,7 @@ namespace OrderOut.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.OrderProduct", b =>
@@ -174,7 +177,7 @@ namespace OrderOut.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderProducts", (string)null);
+                    b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.Product", b =>
@@ -233,7 +236,7 @@ namespace OrderOut.Migrations
 
                     b.HasIndex("MenuId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.Role", b =>
@@ -263,9 +266,14 @@ namespace OrderOut.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.Table", b =>
@@ -299,7 +307,7 @@ namespace OrderOut.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tables", (string)null);
+                    b.ToTable("Tables");
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.TableWaiter", b =>
@@ -343,7 +351,7 @@ namespace OrderOut.Migrations
 
                     b.HasIndex("WaiterId");
 
-                    b.ToTable("TablesWaiters", (string)null);
+                    b.ToTable("TablesWaiters");
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.User", b =>
@@ -383,7 +391,7 @@ namespace OrderOut.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.UserRole", b =>
@@ -415,16 +423,11 @@ namespace OrderOut.Migrations
                     b.Property<DateTimeOffset>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<long?>("UserId1")
-                        .HasColumnType("bigint");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("UsersRoles", (string)null);
+                    b.ToTable("UsersRoles");
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.Waiter", b =>
@@ -456,7 +459,7 @@ namespace OrderOut.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Waiters", (string)null);
+                    b.ToTable("Waiters");
                 });
 
             modelBuilder.Entity("OrderOut.EF.Models.Order", b =>
@@ -510,6 +513,13 @@ namespace OrderOut.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("OrderOut.EF.Models.Role", b =>
+                {
+                    b.HasOne("OrderOut.EF.Models.User", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("OrderOut.EF.Models.TableWaiter", b =>
                 {
                     b.HasOne("OrderOut.EF.Models.Table", "Table")
@@ -543,10 +553,6 @@ namespace OrderOut.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OrderOut.EF.Models.User", null)
-                        .WithMany("UsersRoles")
-                        .HasForeignKey("UserId1");
-
                     b.Navigation("Role");
 
                     b.Navigation("User");
@@ -564,7 +570,7 @@ namespace OrderOut.Migrations
 
             modelBuilder.Entity("OrderOut.EF.Models.User", b =>
                 {
-                    b.Navigation("UsersRoles");
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

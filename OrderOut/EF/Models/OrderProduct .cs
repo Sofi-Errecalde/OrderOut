@@ -5,19 +5,18 @@ namespace OrderOut.EF.Models
 {
     public class OrderProduct : BaseEntity
     {
-        [NotNull]
-        public long OrderId {  get; set; }
+        
         [NotNull]
         public long ProductId { get; set; }
 
-        public int Amount { get; set; }
+        [NotNull]
+        public int Quantity { get; set; }
 
         public string Clarification { get; set; }
-
         [ForeignKey("OrderId")]
-        public virtual Order Order { get; set; }
+        public long OrderId { get; set; }
 
         [ForeignKey("ProductId")]
-        public virtual Product Product { get; set; }
+        public Product Product { get; set; }
     }
 }

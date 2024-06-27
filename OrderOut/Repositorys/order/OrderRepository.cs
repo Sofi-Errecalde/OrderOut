@@ -23,7 +23,13 @@ namespace OrderOut.Repositorys
 
         public async Task<Order?> GetOrder(int orderId)
         {
-            return await _context.Orders.Where(x => x.Id == orderId && x.IsDeleted).FirstOrDefaultAsync();
+            var order = await _context.Orders
+                              .Include(o => o.User)
+                              .Include(o => o.Table)
+                              .Include(o => o.Products)
+                                .ThenInclude(op => op.Product)
+                              .FirstOrDefaultAsync(o => o.Id == orderId);
+            return order;
         }
 
         public async Task<bool> CreateOrder(Order order, List<OrderProduct> products)

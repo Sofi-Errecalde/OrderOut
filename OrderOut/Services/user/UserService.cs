@@ -67,7 +67,7 @@ namespace OrderOut.Services.user
             newUser.PasswordHash = hashedPassword;
             var role = await  _roleService.GetRoleByName("Usuario");
             var userRole = new UserRole();
-            userRole.User= newUser;
+            userRole.UserId= newUser.Id;
             userRole.Role = role;
             var response = await _userRepository.CreateUser(newUser);
             var response2 = await _roleService.CreateUserRole(userRole);
@@ -95,11 +95,11 @@ namespace OrderOut.Services.user
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var roles = new List<UserRoleDto>();
-            foreach(var role in user.UsersRoles)
-            {
-                tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, role.Role.Name));
-                roles.Add(new UserRoleDto {Id= role.Id, Name=role.Role.Name });
-            }
+            //foreach(var role in user.UserRoles)
+            //{
+              //  tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, role.Role.Name));
+                //roles.Add(new UserRoleDto {Id= role.Id, Name=role.Role.Name });
+            //}
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
             var response = new LoginDto

@@ -76,5 +76,10 @@ namespace OrderOut.Services.order
             var response = await _orderRepository.DeleteOrder(orderId);
             return response;
         }
+
+        internal async Task updateStatus(int id, string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -29,24 +29,35 @@ namespace DBContext
             modelBuilder.Entity<Menu>()
                 .HasMany(m => m.Products);
 
-            // Relación uno a muchos entre User y UserRole
-            // Relación uno a muchos entre User y UserRole
             modelBuilder.Entity<UserRole>()
-                .HasOne(ur => ur.User);
+                 .HasKey(ur => new { ur.UserId, ur.RoleId });
 
-            // Relación uno a muchos entre Role y UserRole
             modelBuilder.Entity<UserRole>()
-                .HasOne(ur => ur.Role);
+                .HasOne(ur => ur.User)
+                .WithMany()
+                .HasForeignKey(ur => ur.UserId);
 
-            // Relación uno a muchos entre Table y Order
+            modelBuilder.Entity<UserRole>()
+                .HasOne(ur => ur.Role)
+                .WithMany()
+                .HasForeignKey(ur => ur.RoleId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Table)
-                .WithMany(t => t.Orders);
+                .WithOne()
+                .HasForeignKey<Order>(o => o.TableId);
 
+            // Configuración de la relación entre Order y User
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.User)
+                .WithMany()
+                .HasForeignKey(o => o.UserId);
 
-            // Relación uno a muchos entre Order y OrderProduct
-            modelBuilder.Entity<OrderProduct>()
-                .HasOne(op => op.Order);
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.Products)
+                .WithOne()
+                .HasForeignKey(op => op.OrderId);
 
             // Relación uno a muchos entre Product y OrderProduct
             modelBuilder.Entity<OrderProduct>()

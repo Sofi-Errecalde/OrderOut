@@ -14,6 +14,7 @@ using OrderOut.Repositorys.product;
 using OrderOut.Services.category;
 using OrderOut.Services.menu;
 using OrderOut.Services.order;
+using OrderOut.Services.payment;
 using OrderOut.Services.product;
 using OrderOut.Services.role;
 using OrderOut.Services.table;
@@ -26,7 +27,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Agrega servicios al contenedor.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+      .AddJsonOptions(options =>
+      {
+          options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+      });
 
 // Configuración de Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
@@ -101,6 +106,11 @@ builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 
 builder.Services.AddTransient<IMenuService, MenuService>();
 builder.Services.AddTransient<IMenuRepository, MenuRepository>();
+
+builder.Services.AddTransient<IPaymentService, PaymentService>();
+builder.Services.AddScoped<OrderService>();
+builder.Services.AddScoped<UserService>();
+//builder.Services.AddTransient<IPaymentRepository, PaymentRepository>();
 
 builder.Services.AddTransient<ITableWaiterService, TableWaiterService>();
 builder.Services.AddTransient<ITableWaiterRepository, TableWaiterRepository>();
