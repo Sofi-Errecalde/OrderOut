@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
+using OrderOut.Enums;
 using OrderOut.Services.order;
 
 namespace OrderOut.Controllers
@@ -39,9 +40,9 @@ namespace OrderOut.Controllers
 
         [HttpPut]
         [Route("UpdateOrder")]
-        public async Task<bool> UpdateOrder(Order order)
+        public async Task<bool> UpdateOrderStatus(OrderStatusDto request)
         {
-            return await _orderService.UpdateOrder(order);
+            return await _orderService.UpdateOrderStatus(request);
         }
 
         [HttpDelete]

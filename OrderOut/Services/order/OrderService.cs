@@ -5,6 +5,7 @@ using DBContext;
 using Microsoft.EntityFrameworkCore;
 using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
+using OrderOut.Enums;
 using OrderOut.Repositorys;
 
 namespace OrderOut.Services.order
@@ -46,28 +47,28 @@ namespace OrderOut.Services.order
                  var addProduct= new OrderProduct();
                 addProduct.ProductId = product.ProductId;
                 addProduct.Clarification = product.Clarification;
+                addProduct.Quantity = product.Quantity;
                 orderProducts.Add(addProduct);
             }
             var response = await _orderRepository.CreateOrder(newOrder,orderProducts);
 
-            if (response)
-            {
-                /*foreach (var productId in request)
-                {
-                    var orderProduct = new OrderProduct(newOrder,product);
-                    _context.OrderProducts.Add(orderProduct);
-                }*/
+            //if (response)
+            //{
+            //    foreach (var productId in request.OrdersProducts)
+            //    {
+            //        var orderProduct = new OrderProduct(newOrder,product);
+            //        _context.OrderProducts.Add(orderProduct);
+            //    }
 
-                await _context.SaveChangesAsync();
-            }
+            //    await _context.SaveChangesAsync();
+            //}
 
             return response;
         }
 
-        public async Task<bool> UpdateOrder(Order request)
+        public async Task<bool> UpdateOrderStatus(OrderStatusDto request)
         {
-            var order = _mapper.Map<Order>(request);
-            var response = await _orderRepository.UpdateOrder(order);
+            var response = await _orderRepository.UpdateOrderStatus(request);
             return response;
         }
 

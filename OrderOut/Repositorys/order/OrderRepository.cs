@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using DBContext;
 using Microsoft.EntityFrameworkCore;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF;
 using OrderOut.EF.Models;
 
@@ -35,27 +36,30 @@ namespace OrderOut.Repositorys
         public async Task<bool> CreateOrder(Order order, List<OrderProduct> products)
         {   
             _context.Orders.Add(order);
-            foreach(var product in products)
+            await _context.SaveChangesAsync();
+            foreach (var product in products)
             { product.OrderId= order.Id; }
             _context.AddRange(products);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> UpdateOrder(Order order)
-        {
-            _context.Entry(order).State = EntityState.Modified;
+        public async Task<bool> UpdateOrderStatus(OrderStatusDto request)
+        {   
+            var order = await _context.Orders.Where(o => o.Id == request.OrderId).FirstOrDefaultAsync();
+            order.Status = request.OrderStatus;
+            _context.Update(order);
             await _context.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> DeleteOrder(int orderId)
         {
-            var order = await _context.Orders.FindAsync(orderId);
+            var order = await _context.Orders.Where(x=>x.Id == orderId).FirstOrDefaultAsync();
             if (order == null)
                 return false;
-
-            _context.Orders.Remove(order);
+            order.IsDeleted = true;
+            _context.Orders.Update(order);
             await _context.SaveChangesAsync();
             return true;
         }

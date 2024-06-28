@@ -1,4 +1,6 @@
-﻿namespace OrderOut.DtosOU.Dtos
+﻿using OrderOut.Enums;
+
+namespace OrderOut.DtosOU.Dtos
 {
     public class NewOrderDto
     {
@@ -6,9 +8,9 @@
 
         public DateTime DateTime { get; set; }
 
-        public string Status { get; set; }
+        public OrderStatusEnum Status { get; set; }
 
-        public string? PersonName { get; set; }
+        public long? UserId { get; set; }
 
         public virtual ICollection<OrderProductDto> OrdersProducts { get; set; }
 

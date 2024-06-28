@@ -9,6 +9,7 @@ using MercadoPago.Client.Preference;
 using OrderOut.Services.order;
 using OrderOut.Services.user;
 using static System.Net.WebRequestMethods;
+using OrderOut.Enums;
 
 namespace OrderOut.Controllers
 {
@@ -30,7 +31,7 @@ namespace OrderOut.Controllers
         public async Task<IActionResult> CreateOrder(int id)
         {
             var orderDetails = await _orderService.GetOrder(id);
-            if (orderDetails == null || orderDetails.Status != "Entregado")
+            if (orderDetails == null || orderDetails.Status != OrderStatusEnum.Entregado)
             {
                 return BadRequest("Solo es posible pagar un pedido en estado Entregado");
             }
@@ -41,7 +42,7 @@ namespace OrderOut.Controllers
                 Id = detail.Id.ToString(),
                 UnitPrice = (decimal)detail.Product.Price,
                 CurrencyId = "ARS",
-                Quantity = detail.quantity,
+                Quantity = detail.Quantity,
                 Title = $"Pedido Nro: {detail.OrderId}",
                 Description = $"Pedido Nro: {id}"
             }).ToList();

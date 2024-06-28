@@ -18,12 +18,12 @@ namespace OrderOut.Repositorys
 
         public async Task<List<User>> GetAllUsers()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.Include(x => x.UsersRoles).ThenInclude(x => x.Role).ToListAsync();
         }
 
         public async Task<User?> GetUser(int userId)
         {
-            return await _context.Users.Where(x => x.Id == userId && !x.IsDeleted).FirstOrDefaultAsync();
+            return await _context.Users.Include(x => x.UsersRoles).ThenInclude(x=>x.Role).Where(x => x.Id == userId && !x.IsDeleted).FirstOrDefaultAsync();
         }
 
         public async Task<User?> GetUserByEmail(string userEmail)

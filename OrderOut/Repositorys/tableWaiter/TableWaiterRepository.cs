@@ -15,12 +15,12 @@ namespace OrderOut.Repositorys
 
         public async Task<List<TableWaiter>> GetAllTablesWaiters()
         {
-            return await _context.TablesWaiters.ToListAsync();
+            return await _context.TablesWaiters.Include(x => x.Table).Include(x => x.Waiter).ToListAsync();
         }
 
         public async Task<TableWaiter?> GetTableWaiter(int tableWaiterId)
         {
-            return await _context.TablesWaiters.Where(x => x.Id == tableWaiterId && !x.IsDeleted).FirstOrDefaultAsync();
+            return await _context.TablesWaiters.Include(x => x.Table).Include(x => x.Waiter).Where(x => x.Id == tableWaiterId && !x.IsDeleted).FirstOrDefaultAsync();
         }
 
         public async Task<bool> AssignTablesToWaiters(TableWaiter tableWaiter)

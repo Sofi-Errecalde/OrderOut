@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 
 namespace OrderOut.Repositorys
@@ -9,7 +10,7 @@ namespace OrderOut.Repositorys
         Task<List<Order>> GetAllOrders();
         Task<Order?> GetOrder(int orderId);
         Task<bool> CreateOrder(Order order, List<OrderProduct> products);
-        Task<bool> UpdateOrder(Order order);
+        Task<bool> UpdateOrderStatus(OrderStatusDto order);
         Task<bool> DeleteOrder(int orderId);
     }
 }

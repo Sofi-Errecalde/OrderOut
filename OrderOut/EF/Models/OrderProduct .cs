@@ -13,6 +13,7 @@ namespace OrderOut.EF.Models
         public int Quantity { get; set; }
 
         public string Clarification { get; set; }
+
         [ForeignKey("OrderId")]
         public long OrderId { get; set; }
 

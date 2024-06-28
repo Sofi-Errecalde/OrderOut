@@ -18,12 +18,12 @@ namespace OrderOut.Repositorys
 
         public Task<List<Menu>> GetAllMenus()
         {
-            return _context.Menus.Where(x => !x.IsDeleted).ToListAsync();
+            return _context.Menus.Include(x=> x.Products).Where(x => !x.IsDeleted).ToListAsync();
         }
 
         public  Task<Menu?> GetMenu(int menuId)
         {
-            return   _context.Menus.Where(x => x.Id == menuId && x.IsDeleted).FirstOrDefaultAsync();
+            return   _context.Menus.Include(x => x.Products).Where(x => x.Id == menuId && x.IsDeleted).FirstOrDefaultAsync();
         }
 
         public  bool CreateMenu(Menu menu)

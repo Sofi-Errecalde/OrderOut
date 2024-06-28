@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
+using OrderOut.Enums;
 
 namespace OrderOut.Services.order
 {
@@ -10,7 +11,7 @@ namespace OrderOut.Services.order
         Task<List<Order>> GetAllOrders();
         Task<Order> GetOrder(int orderId);
         Task<bool> CreateOrder(NewOrderDto request);
-        Task<bool> UpdateOrder(Order request);
+        Task<bool> UpdateOrderStatus(OrderStatusDto request);
         Task<bool> DeleteOrder(int orderId);
     }
 }

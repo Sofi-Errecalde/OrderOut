@@ -14,6 +14,7 @@ namespace OrderOut.MappingProfile
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<Table, TableDto>().ReverseMap();
             CreateMap<TableWaiter, TableWaiterDto>().ReverseMap();
+            CreateMap<Order, NewOrderDto>().ReverseMap();
             CreateMap<OrderProduct, OrderProduct>().ReverseMap();
             CreateMap<Order, Order>()
                 .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User))
@@ -25,7 +26,5 @@ namespace OrderOut.MappingProfile
              .ReverseMap();
         }
     }
-            CreateMap<Order, NewOrderDto>().ReverseMap();
-        }
 
     }
