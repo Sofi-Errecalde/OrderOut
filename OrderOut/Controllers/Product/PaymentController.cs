@@ -31,10 +31,10 @@ namespace OrderOut.Controllers
         public async Task<IActionResult> CreateOrder(int id)
         {
             var orderDetails = await _orderService.GetOrder(id);
-            if (orderDetails == null || orderDetails.Status != OrderStatusEnum.Entregado)
+           /* if (orderDetails == null || orderDetails.Status != OrderStatusEnum.Entregado)
             {
                 return BadRequest("Solo es posible pagar un pedido en estado Entregado");
-            }
+            }*/
             Console.WriteLine("Hello, World!");
             Console.WriteLine(orderDetails);
             var items = orderDetails.Products.Select(detail => new PreferenceItemRequest

@@ -10,7 +10,7 @@ namespace OrderOut.Services.order
     {
         Task<List<Order>> GetAllOrders();
         Task<Order> GetOrder(int orderId);
-        Task<bool> CreateOrder(NewOrderDto request);
+        Task<Order> CreateOrder(NewOrderDto request);
         Task<bool> UpdateOrderStatus(OrderStatusDto request);
         Task<bool> DeleteOrder(int orderId);
     }

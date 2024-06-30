@@ -38,7 +38,7 @@ namespace OrderOut.Services.order
             return response;
         }
 
-        public async Task<bool> CreateOrder(NewOrderDto request)
+        public async Task<Order> CreateOrder(NewOrderDto request)
         {
             var newOrder = _mapper.Map<Order>(request);
             var orderProducts = new List<OrderProduct>();

@@ -27,11 +27,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Agrega servicios al contenedor.
-builder.Services.AddControllers()
-      .AddJsonOptions(options =>
-      {
-          options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-      });
+builder.Services.AddControllers();
+
 
 // Configuración de Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();

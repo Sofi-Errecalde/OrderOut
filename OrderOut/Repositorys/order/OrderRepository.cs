@@ -33,7 +33,7 @@ namespace OrderOut.Repositorys
             return order;
         }
 
-        public async Task<bool> CreateOrder(Order order, List<OrderProduct> products)
+        public async Task<Order> CreateOrder(Order order, List<OrderProduct> products)
         {   
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
@@ -41,7 +41,7 @@ namespace OrderOut.Repositorys
             { product.OrderId= order.Id; }
             _context.AddRange(products);
             await _context.SaveChangesAsync();
-            return true;
+            return await GetOrder((int)order.Id);
         }
 
         public async Task<bool> UpdateOrderStatus(OrderStatusDto request)
