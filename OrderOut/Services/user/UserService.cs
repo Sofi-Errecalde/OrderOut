@@ -66,10 +66,10 @@ namespace OrderOut.Services.user
             string hashedPassword = passwordHasher.HashPassword(newUser, request.Password);
             newUser.PasswordHash = hashedPassword;
             var role = await  _roleService.GetRoleByName("Usuario");
-            var userRole = new UserRole();
-            userRole.UserId= newUser.Id;
+            var userRole = new UserRole();            
             userRole.Role = role;
             var response = await _userRepository.CreateUser(newUser);
+            userRole.UserId = newUser.Id;
             var response2 = await _roleService.CreateUserRole(userRole);
             return response;
         }
