@@ -74,7 +74,7 @@ namespace OrderOut.Services.user
             return response;
         }
 
-        public async Task<LoginDto> Login(CreateUserDto request)
+        public async Task<LoginResponseDto> Login(LoginRequestDto request)
         {
             var user = await _userRepository.GetUserByEmail(request.Email);
             var passwordHasher = new PasswordHasher<User>();
@@ -105,7 +105,7 @@ namespace OrderOut.Services.user
             //}
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
-            var response = new LoginDto
+            var response = new LoginResponseDto
             {
                 AccessToken = tokenString,
                 User = new UserLoginResponseDto { 

@@ -32,7 +32,7 @@ namespace OrderOut.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public async Task<LoginDto> Login(CreateUserDto request)
+        public async Task<LoginResponseDto> Login(LoginRequestDto request)
         {
             return await _userService.Login(request);
         }

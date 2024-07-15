@@ -2,7 +2,7 @@
 
 namespace OrderOut.DtosOU.Dtos
 {
-    public class LoginDto
+    public class LoginResponseDto
     {
         public string AccessToken { get; set; }
         
