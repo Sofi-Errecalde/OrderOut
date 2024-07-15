@@ -34,7 +34,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "OurderOut", Version = "v1" });
+    c.SwaggerDoc("v1", new() { Title = "JWT API", Version = "v1" });
 
     c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
     {
@@ -42,10 +42,11 @@ builder.Services.AddSwaggerGen(c =>
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
-        Scheme = JwtBearerDefaults.AuthenticationScheme
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+
     });
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
     {
         {
             new OpenApiSecurityScheme
@@ -53,10 +54,10 @@ builder.Services.AddSwaggerGen(c =>
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = JwtBearerDefaults.AuthenticationScheme
-                }
+                    Id = JwtBearerDefaults.AuthenticationScheme,
+                }, Scheme = "oauth2", Name = JwtBearerDefaults.AuthenticationScheme, In = ParameterLocation.Header,
             },
-            Array.Empty<string>()
+            new List<string>{}
         }
     });
 });
@@ -145,7 +146,7 @@ app.UseRouting();
 app.UseCors();
 app.UseCors("MyAllowSpecificOrigins");
 
-app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

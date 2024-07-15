@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
@@ -18,7 +19,6 @@ namespace OrderOut.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Policy="Usuario")]
         [Route("GetRole")]
         public async Task<Role> GetRole(int roleId)
         {
@@ -26,7 +26,6 @@ namespace OrderOut.Controllers
         }
         
         [HttpGet]
-        //[Authorize]
         [Route("AllRoles")]
         public async Task<List<Role>> AllRoles()
         {

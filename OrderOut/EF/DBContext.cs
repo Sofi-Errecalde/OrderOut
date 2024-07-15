@@ -34,7 +34,7 @@ namespace DBContext
 
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.User)
-                .WithMany()
+                .WithMany(u=> u.UsersRoles)
                 .HasForeignKey(ur => ur.UserId);
 
             modelBuilder.Entity<UserRole>()

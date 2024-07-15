@@ -90,15 +90,18 @@ namespace OrderOut.Services.user
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                 new Claim(ClaimTypes.Name, request.Email)
+
                 }),
-                Expires = DateTime.UtcNow.AddDays(_authSettings.Value.TokenDays),
+                Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var roles = new List<UserRoleDto>();
+            var rolesClaim = user.UsersRoles.Select(x => new Claim(ClaimTypes.Role, x.Role.Name));
+            tokenDescriptor.Subject.AddClaims(rolesClaim);
             //foreach(var role in user.UserRoles)
             //{
-              //  tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, role.Role.Name));
-                //roles.Add(new UserRoleDto {Id= role.Id, Name=role.Role.Name });
+            //  tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, role.Role.Name));
+            //roles.Add(new UserRoleDto {Id= role.Id, Name=role.Role.Name });
             //}
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
