@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using OrderOut.Enums;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OrderOut.DtosOU.Dtos
 {
@@ -9,7 +10,7 @@ namespace OrderOut.DtosOU.Dtos
         public long TableId { get; set; }
         [NotNull]
         public long WaiterId { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateOnly StartTime { get; set; }
+        public ShiftEnum Shift { get; set; }
     }
 }
