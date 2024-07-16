@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.IdentityModel.Tokens;
 using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Repositorys.product;
@@ -23,6 +24,10 @@ namespace OrderOut.Services.product
         public async Task<Product> GetProduct(int productId)
         {
             var product = await _productRepository.GetProduct(productId);
+            if(product == null)
+            {
+                throw new Exception("ID de producto inexistente");
+            }
             var response = _mapper.Map<Product>(product);
             return response;
         }
@@ -30,6 +35,10 @@ namespace OrderOut.Services.product
         public async Task<List<Product>> GetAllProducts()
         {
             var products = await _productRepository.GetAllProducts();
+            if (products == null)
+            {
+                throw new Exception("No hay productos disponibles");
+            }
             var response = _mapper.Map<List<Product>>(products);
             return response;
 
@@ -37,8 +46,12 @@ namespace OrderOut.Services.product
 
         public async Task<List<Product>> GetProductByCategory(int categoryId)
         {
-            var product = await _productRepository.GetProductByCategory(categoryId);
-            var response = _mapper.Map<List<Product>>(product);
+            var products = await _productRepository.GetProductByCategory(categoryId);
+            if (products.IsNullOrEmpty())
+            {
+                throw new Exception("No hay productos disponibles para la categoría");
+            }
+            var response = _mapper.Map<List<Product>>(products);
             return response;
         }
 
@@ -46,20 +59,42 @@ namespace OrderOut.Services.product
         {
 
             var newProduct = _mapper.Map<Product>(request);
-            var response = await _productRepository.CreateProduct(newProduct);
-            return response;
+            try
+            {
+                await _productRepository.CreateProduct(newProduct);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ocurrio un error al intentar crear el producto");
+            }
+            return true;
         }
 
         public async Task<bool> DeleteProduct(int productId)
         {
-            return await _productRepository.DeleteProduct(productId);
+            try
+            {
+                await _productRepository.DeleteProduct(productId);
+            }
+            catch (Exception ex)
+            {
+                 throw new Exception("Ocurrio un error al intentar eliminar el producto");
+            }
+            return true;
         }
 
         public async Task<bool> UpdateProduct(ProductDto request)
         {
             var product = _mapper.Map<Product>(request);
-            var response = await _productRepository.UpdateProduct(product);
-            return response;
+            try
+            {
+               await _productRepository.UpdateProduct(product);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ocurrio un error al intentar modificar el producto");
+            }
+            return true;
         }
     }
 }

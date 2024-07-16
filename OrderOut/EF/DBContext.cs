@@ -45,8 +45,8 @@ namespace DBContext
 
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Table)
-                .WithOne()
-                .HasForeignKey<Order>(o => o.TableId);
+                .WithMany()
+                .HasForeignKey(o => o.TableId);
 
             // Configuración de la relación entre Order y User
             modelBuilder.Entity<Order>()

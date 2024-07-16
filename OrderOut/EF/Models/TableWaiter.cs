@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using OrderOut.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace OrderOut.EF.Models
@@ -10,8 +11,9 @@ namespace OrderOut.EF.Models
         [NotNull]
         public long WaiterId { get; set; }
 
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateOnly Date { get; set; }
+
+        public ShiftEnum Shift { get; set; }
 
         [ForeignKey("TableId")]
         public virtual Table Table { get; set; }

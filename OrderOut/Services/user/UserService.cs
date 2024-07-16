@@ -96,6 +96,15 @@ namespace OrderOut.Services.user
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var roles = new List<UserRoleDto>();
+            foreach (var role in user.UsersRoles)
+            {
+                var roleDto = new UserRoleDto
+                {
+                    Id = role.Id,
+                    Name = role.Role.Name
+                };
+                roles.Add(roleDto);
+            }
             var rolesClaim = user.UsersRoles.Select(x => new Claim(ClaimTypes.Role, x.Role.Name));
             tokenDescriptor.Subject.AddClaims(rolesClaim);
             //foreach(var role in user.UserRoles)
