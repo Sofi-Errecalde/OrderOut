@@ -7,18 +7,21 @@ using Microsoft.IdentityModel.Tokens;
 using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Repositorys.product;
+using OrderOut.Services.photo;
 namespace OrderOut.Services.product
 {
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
+        private readonly PhotoService _photoService;
 
         public ProductService(IProductRepository productRepository,
-                                IMapper mapper)
+                                IMapper mapper, PhotoService photoService )
         {
             _productRepository = productRepository;
             _mapper = mapper;
+            _photoService = photoService;
         }
 
         public async Task<Product> GetProduct(int productId)
@@ -62,6 +65,25 @@ namespace OrderOut.Services.product
             try
             {
                 await _productRepository.CreateProduct(newProduct);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ocurrio un error al intentar crear el producto");
+            }
+            return true;
+        }
+
+
+        public async Task<bool> CreateProductWhithPhoto(ProductDto request)
+        {
+
+            var newProduct = _mapper.Map<Product>(request);
+            try
+            {
+                var img = await _photoService.UploadPhotoAsync(request.Photo);
+                newProduct.ImageUrl = img;
+                await _productRepository.CreateProduct(newProduct);
+
             }
             catch (Exception ex)
             {

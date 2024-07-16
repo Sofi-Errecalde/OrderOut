@@ -11,6 +11,7 @@ namespace OrderOut.Services.product
     {
         Task<Product> GetProduct(int productId);
         Task<bool> CreateProduct(ProductDto request);
+        Task<bool> CreateProductWhithPhoto(ProductDto request);
         Task<List<Product>> GetAllProducts();
         Task<List<Product>> GetProductByCategory(int categoryId);
         Task<bool> DeleteProduct(int productId);

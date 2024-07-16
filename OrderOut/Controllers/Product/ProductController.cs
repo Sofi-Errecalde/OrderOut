@@ -60,8 +60,17 @@ namespace OrderOut.Controllers
 
             return response;
         }
-       
-        
+
+        [HttpPost]
+        [Route("CreateProductWhithPhoto")]
+        public async Task<bool> CreateProductWhithPhoto(ProductDto product)
+        {
+            var response = await _productService.CreateProductWhithPhoto(product);
+
+            return response;
+        }
+
+
         [HttpPut]
         [Route("UpdateProduct")]
         public async Task<bool> UpdateProduct(ProductDto product)

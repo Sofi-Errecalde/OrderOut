@@ -15,6 +15,7 @@ using OrderOut.Services.category;
 using OrderOut.Services.menu;
 using OrderOut.Services.order;
 using OrderOut.Services.payment;
+using OrderOut.Services.photo;
 using OrderOut.Services.product;
 using OrderOut.Services.role;
 using OrderOut.Services.table;
@@ -25,10 +26,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Agrega servicios al contenedor.
 builder.Services.AddControllers();
-
 
 // Configuración de Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
@@ -43,7 +42,6 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
         Scheme = JwtBearerDefaults.AuthenticationScheme,
-
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement()
@@ -55,9 +53,12 @@ builder.Services.AddSwaggerGen(c =>
                 {
                     Type = ReferenceType.SecurityScheme,
                     Id = JwtBearerDefaults.AuthenticationScheme,
-                }, Scheme = "oauth2", Name = JwtBearerDefaults.AuthenticationScheme, In = ParameterLocation.Header,
+                },
+                Scheme = "oauth2",
+                Name = JwtBearerDefaults.AuthenticationScheme,
+                In = ParameterLocation.Header,
             },
-            new List<string>{}
+            new List<string>()
         }
     });
 });
@@ -72,13 +73,12 @@ var mapperConfig = new MapperConfiguration(mc =>
     mc.AddProfile(new MappingProfile());
 });
 IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
+// Configuración de JWT
 var authSettings = builder.Configuration.GetSection(AuthSettings.SectionName);
 builder.Services.Configure<AuthSettings>(authSettings);
-
 builder.Services.AddJwt(builder.Configuration);
-
-builder.Services.AddSingleton(mapper);
 
 // Agregar otros servicios
 builder.Services.AddTransient<IProductService, ProductService>();
@@ -108,11 +108,10 @@ builder.Services.AddTransient<IMenuRepository, MenuRepository>();
 builder.Services.AddTransient<IPaymentService, PaymentService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<UserService>();
-//builder.Services.AddTransient<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<PhotoService>();
 
 builder.Services.AddTransient<ITableWaiterService, TableWaiterService>();
 builder.Services.AddTransient<ITableWaiterRepository, TableWaiterRepository>();
-
 
 // Configuración de CORS
 builder.Services.AddCors(options =>
@@ -121,7 +120,6 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy.WithOrigins(Constants.FrontendUrl).AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
-            ;
         });
     options.AddPolicy(name: "MyAllowSpecificOrigins",
                       policy =>
@@ -145,7 +143,6 @@ app.UseRouting();
 
 app.UseCors();
 app.UseCors("MyAllowSpecificOrigins");
-
 
 app.UseAuthorization();
 
