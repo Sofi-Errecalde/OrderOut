@@ -29,7 +29,7 @@
                 await photo.CopyToAsync(stream);
             }
 
-            return $"/uploads/{photo.FileName}";
+            return $"{photo.FileName}";
         }
 
         public byte[] GetPhoto(string fileName, out string contentType)

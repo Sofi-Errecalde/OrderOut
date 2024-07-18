@@ -35,6 +35,22 @@ namespace OrderOut.Services.product
             return response;
         }
 
+        public async Task<ProductDto> GetProductPhoto(int productId)
+        {
+            var product = await _productRepository.GetProduct(productId);
+            if (product == null)
+            {
+                throw new Exception("ID de producto inexistente");
+            }
+            var response = _mapper.Map<ProductDto>(product);
+            string CointenTipe;
+            var url = _photoService.GetPhoto(product.ImageUrl,out CointenTipe);
+            response.Image= url;
+
+            return response;
+        }
+
+
         public async Task<List<Product>> GetAllProducts()
         {
             var products = await _productRepository.GetAllProducts();

@@ -35,6 +35,16 @@ namespace OrderOut.Controllers
         }
 
         [HttpGet]
+        [Route("GetProductPhoto")]
+        public async Task<ProductDto> GetProductPhoto(int productId)
+        {
+            var response = await _productService.GetProductPhoto(productId);
+
+            return response;
+        }
+
+
+        [HttpGet]
         [Route("AllProducts")]
         public Task<List<Product>> AllProducts()
         {

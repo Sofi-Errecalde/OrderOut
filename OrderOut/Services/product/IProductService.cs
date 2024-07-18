@@ -10,6 +10,7 @@ namespace OrderOut.Services.product
     public interface IProductService
     {
         Task<Product> GetProduct(int productId);
+        Task<ProductDto> GetProductPhoto(int productId);
         Task<bool> CreateProduct(ProductDto request);
         Task<bool> CreateProductWhithPhoto(ProductDto request);
         Task<List<Product>> GetAllProducts();
