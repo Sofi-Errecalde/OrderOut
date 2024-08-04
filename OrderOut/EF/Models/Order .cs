@@ -11,6 +11,7 @@ namespace OrderOut.EF.Models
 
         public long TableId { get; set; }
 
+        public long totalAmount { get; set; }
         public OrderStatusEnum Status { get; set; }
 
         [ForeignKey("UserId")]
