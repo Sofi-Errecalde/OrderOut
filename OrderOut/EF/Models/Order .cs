@@ -11,6 +11,8 @@ namespace OrderOut.EF.Models
 
         public long TableId { get; set; }
 
+        public long BillId { get; set; }
+
         public OrderStatusEnum Status { get; set; }
 
         [ForeignKey("UserId")]
@@ -18,6 +20,9 @@ namespace OrderOut.EF.Models
 
         [ForeignKey("TableId")]
         public virtual Table Table { get; set; }
+
+        [ForeignKey("BillId")]
+        public virtual Bill Bill { get; set; }
 
         public virtual  List<OrderProduct> Products { get; set; }
 

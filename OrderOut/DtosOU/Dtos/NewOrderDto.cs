@@ -12,6 +12,10 @@ namespace OrderOut.DtosOU.Dtos
 
         public long? UserId { get; set; }
 
+        public long? BillId { get; set; }
+
+        public string? ClientEmail { get; set; }
+
         public virtual ICollection<OrderProductDto> OrdersProducts { get; set; }
 
 

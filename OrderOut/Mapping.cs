@@ -19,6 +19,7 @@ namespace OrderOut.MappingProfile
             CreateMap<OrderProduct, OrderProduct>().ReverseMap();
             CreateMap<Order, Order>();
             CreateMap<User, User>();
+            CreateMap<CreateBillDto, Bill>().ReverseMap();
         }
     }
 

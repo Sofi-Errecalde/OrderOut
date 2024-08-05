@@ -43,6 +43,13 @@ namespace OrderOut.Repositorys.product
 
         }
 
+        public async Task<List<Product>> GetProductsByIds(List<long> productsId)
+        {
+            return await _appDbContext.Products.Where(x => x.IsDeleted == false && productsId.Contains(x.Id)).ToListAsync();
+
+        }
+
+
         public async Task<List<Product>> GetProductByCategory(int categoryId)
         {
             return await _appDbContext.Products.Where(x => x.CategoryId == categoryId && x.IsDeleted == false).ToListAsync();

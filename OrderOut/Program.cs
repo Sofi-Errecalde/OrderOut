@@ -11,6 +11,7 @@ using OrderOut.DtosOU;
 using OrderOut.MappingProfile;
 using OrderOut.Repositorys;
 using OrderOut.Repositorys.product;
+using OrderOut.Services.bill;
 using OrderOut.Services.category;
 using OrderOut.Services.menu;
 using OrderOut.Services.order;
@@ -101,6 +102,9 @@ builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 
 builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+
+builder.Services.AddTransient<IBillService, BillService>();
+builder.Services.AddTransient<IBillRepository, BillRepository>();
 
 builder.Services.AddTransient<IMenuService, MenuService>();
 builder.Services.AddTransient<IMenuRepository, MenuRepository>();

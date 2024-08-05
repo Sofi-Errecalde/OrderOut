@@ -7,19 +7,25 @@ using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Enums;
 using OrderOut.Repositorys;
+using OrderOut.Repositorys.product;
+using OrderOut.Services.bill;
 
 namespace OrderOut.Services.order
 {
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly IBillService _billService;
         private readonly IMapper _mapper;
         private readonly AppDbContext _context;
 
-        public OrderService(IOrderRepository orderRepository,AppDbContext context,
+        public OrderService(IOrderRepository orderRepository, IProductRepository productRepository, IBillService billService,AppDbContext context,
                             IMapper mapper)
         {
             _orderRepository = orderRepository;
+            _productRepository = productRepository;
+            _billService = billService;
             _mapper = mapper;
             _context = context;
         }
@@ -40,17 +46,55 @@ namespace OrderOut.Services.order
 
         public async Task<Order> CreateOrder(NewOrderDto request)
         {
+            Bill bill;
+            if (request.BillId == null)
+            {
+                var newBill = new CreateBillDto
+                {
+                    ClientEmail = request.ClientEmail
+
+                };
+                bill = await _billService.CreateBill(newBill);
+                request.BillId = bill.Id;
+            }
+            else
+            {
+                bill = await _billService.GetBill(request.BillId.Value);
+            }
             var newOrder = _mapper.Map<Order>(request);
             var orderProducts = new List<OrderProduct>();
+            float amount = 0;
+            List<long> productsId = new List<long>();
             foreach (var product in request.OrdersProducts)
             {
-                 var addProduct= new OrderProduct();
+                productsId.Add(product.ProductId);
+                var addProduct= new OrderProduct();
                 addProduct.ProductId = product.ProductId;
                 addProduct.Clarification = product.Clarification;
                 addProduct.Quantity = product.Quantity;
                 orderProducts.Add(addProduct);
+                
             }
             var response = await _orderRepository.CreateOrder(newOrder,orderProducts);
+            var products = await _productRepository.GetProductsByIds(productsId);
+            amount = bill.Amount == null?amount = 0:amount = bill.Amount.Value;
+            foreach (var product in products)
+            {
+              foreach(var orderproduct in orderProducts)
+              {
+                    if(orderproduct.ProductId == product.Id)
+                    {
+                        float add = product.Price * orderproduct.Quantity;
+                        amount = amount + add;
+                        break;
+                    }
+              }
+            }
+            bill.Amount = amount;
+            var updateBill = await _billService.UpdateBill(bill);
+
+            response.Bill = updateBill;
+
 
             //if (response)
             //{

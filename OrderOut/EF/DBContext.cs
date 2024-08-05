@@ -18,6 +18,7 @@ namespace DBContext
             public virtual DbSet<OrderProduct> OrderProducts { get; set; }
             public virtual DbSet<Waiter> Waiters { get; set; }
             public virtual DbSet<TableWaiter> TablesWaiters { get; set; }
+            public virtual DbSet<Bill> Bills { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
