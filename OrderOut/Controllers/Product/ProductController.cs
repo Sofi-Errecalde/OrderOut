@@ -36,11 +36,13 @@ namespace OrderOut.Controllers
 
         [HttpGet]
         [Route("GetProductPhoto")]
-        public async Task<ProductDto> GetProductPhoto(int productId)
+        public async Task<IActionResult> GetProductPhoto(int productId)
         {
             var response = await _productService.GetProductPhoto(productId);
 
-            return response;
+            if (response.Image != null) {
+                return File(response.Image, "image/jpeg");
+            } else { return null; };
         }
 
 

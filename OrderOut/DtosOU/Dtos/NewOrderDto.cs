@@ -7,7 +7,7 @@ namespace OrderOut.DtosOU.Dtos
         public long TableId { get; set; }
 
         public DateTime DateTime { get; set; }
-
+        public long totalAmount { get; set; }
         public OrderStatusEnum Status { get; set; }
 
         public long? UserId { get; set; }

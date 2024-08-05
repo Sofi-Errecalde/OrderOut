@@ -19,7 +19,12 @@ namespace OrderOut.Repositorys
 
         public async Task<List<Order>> GetAllOrders()
         {
-            return await _context.Orders.ToListAsync();
+            return await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.Table)
+                .Include(o => o.Products)
+                  .ThenInclude(op => op.Product)
+                .ToListAsync();
         }
 
         public async Task<Order?> GetOrder(int orderId)
