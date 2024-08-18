@@ -7,8 +7,8 @@ namespace OrderOut.Repositorys
 {
     public interface IBillRepository
     {
-        //Task<List<Bill>> GetAllBills();
         Task<Bill> GetBill(long billId);
+        Task<List<Bill>> GetBills(DateTime startDate, DateTime endDate);
         Task<Bill> CreateBill(Bill bill);
         Task<Bill> UpdateBill(Bill request);
         //Task<bool> DeleteBill(int billId);

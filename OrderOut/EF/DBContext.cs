@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrderOut.EF.Models;
+using OrderOut.Migrations;
 namespace DBContext
 {
         public class AppDbContext : DbContext
@@ -44,16 +45,16 @@ namespace DBContext
                 .HasForeignKey(ur => ur.RoleId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.Table)
-                .WithMany()
-                .HasForeignKey(o => o.TableId);
+            //modelBuilder.Entity<Order>()
+            //    .HasOne(o => o.Table)
+            //    .WithMany()
+            //    .HasForeignKey(o => o.TableId);
 
             // Configuración de la relación entre Order y User
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.User)
-                .WithMany()
-                .HasForeignKey(o => o.UserId);
+            //modelBuilder.Entity<Order>()
+            //    .HasOne(o => o.User)
+            //    .WithMany()
+            //    .HasForeignKey(o => o.UserId);
 
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.Products)
@@ -64,6 +65,12 @@ namespace DBContext
             modelBuilder.Entity<OrderProduct>()
                 .HasOne(op => op.Product);
 
+            //Bill
+            //modelBuilder.Entity<Bill>()
+            //    .HasOne(b => b.TableWaiter);
+            //.WithMany()
+            //.HasForeignKey(b => b.TableWaiterId)
+            //.OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

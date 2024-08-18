@@ -11,9 +11,9 @@ namespace OrderOut.EF.Models
         [NotNull]
         public long WaiterId { get; set; }
 
-        public DateOnly Date { get; set; }
+        public DateOnly StartTime { get; set; }
 
-        public ShiftEnum Shift { get; set; }
+        public int Shift { get; set; }
 
         [ForeignKey("TableId")]
         public virtual Table Table { get; set; }

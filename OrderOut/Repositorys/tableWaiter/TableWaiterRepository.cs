@@ -1,6 +1,7 @@
 ﻿using DBContext;
 using Microsoft.EntityFrameworkCore;
 using OrderOut.EF.Models;
+using OrderOut.Enums;
 
 namespace OrderOut.Repositorys
 {
@@ -23,8 +24,24 @@ namespace OrderOut.Repositorys
             return await _context.TablesWaiters.Include(x => x.Table).Include(x => x.Waiter).Where(x => x.Id == tableWaiterId && !x.IsDeleted).FirstOrDefaultAsync();
         }
 
-        public async Task<bool> AssignTablesToWaiters(TableWaiter tableWaiter)
+        public async Task<TableWaiter?> GetTableWaiterByTable(int tableId)
         {
+            return await _context.TablesWaiters.Include(x => x.Table).Include(x => x.Waiter).Where(x => x.TableId == tableId && !x.IsDeleted).FirstOrDefaultAsync();
+        }
+
+        public async Task<TableWaiter?> GetTableWaiterForBill(int tableId, int shift)
+        {
+            var tableWaiter = await _context.TablesWaiters.Where(x => x.TableId == tableId && x.Shift == shift && !x.IsDeleted).FirstOrDefaultAsync();
+            return tableWaiter;
+        }
+
+        public async Task<bool> AssignTablesToWaiters(TableWaiter tableWaiter)
+        {   
+            var deleteWaiter = await GetTableWaiterForBill((int)tableWaiter.TableId, tableWaiter.Shift);
+            if (deleteWaiter is not null)
+            {
+                var ok = await DeleteTableWaiter((int)deleteWaiter.Id);
+            }
             _context.TablesWaiters.Add(tableWaiter);
             await _context.SaveChangesAsync();
             return true;

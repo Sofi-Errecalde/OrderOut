@@ -31,6 +31,13 @@ namespace OrderOut.Services.tableWaiter
             return response;
         }
 
+        public async Task<TableWaiter> GetTableWaiterByTable(int tableId)
+        {
+            var table = await _tableWaiterRepository.GetTableWaiterByTable(tableId);
+            var response = _mapper.Map<TableWaiter>(table);
+            return response;
+        }
+
         public async Task<bool> AssignTablesToWaiters(TableWaiterDto request)
         {
             var newTableWaiter = _mapper.Map<TableWaiter>(request);

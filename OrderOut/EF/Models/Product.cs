@@ -11,6 +11,7 @@ namespace OrderOut.EF.Models
         public long CategoryId { get; set; }
         public bool IsVegan { get; set; }
         public bool IsGlutenFree { get; set; }
+        public TimeOnly Making { get; set; }
 
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }

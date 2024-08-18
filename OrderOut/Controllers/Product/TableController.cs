@@ -37,12 +37,12 @@ namespace OrderOut.Controllers
             return await _tableService.CreateTable(table);
         }
 
-        [HttpPost]
-        [Route("AssignTablesToWaiters")]
-        public async Task<bool> AssignTablesToWaiters(TableWaiterDto table)
-        {
-            return await _tableService.AssignTablesToWaiters(table);
-        }
+        //[HttpPost]
+        //[Route("AssignTablesToWaiters")]
+        //public async Task<bool> AssignTablesToWaiters(TableWaiterDto tableWaiter)
+        //{
+        //    return await _tableService.AssignTablesToWaiters(tableWaiter);
+        //}
 
         [HttpPut]
         [Route("UpdateTable")]

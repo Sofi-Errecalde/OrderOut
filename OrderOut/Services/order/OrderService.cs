@@ -16,15 +16,17 @@ namespace OrderOut.Services.order
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IProductRepository _productRepository;
+        private readonly ITableWaiterRepository _tableWaiterRepository;
         private readonly IBillService _billService;
         private readonly IMapper _mapper;
         private readonly AppDbContext _context;
 
-        public OrderService(IOrderRepository orderRepository, IProductRepository productRepository, IBillService billService,AppDbContext context,
+        public OrderService(IOrderRepository orderRepository, IProductRepository productRepository, ITableWaiterRepository tableWaiterRepository, IBillService billService,AppDbContext context,
                             IMapper mapper)
         {
             _orderRepository = orderRepository;
             _productRepository = productRepository;
+            _tableWaiterRepository = tableWaiterRepository;
             _billService = billService;
             _mapper = mapper;
             _context = context;
@@ -36,6 +38,14 @@ namespace OrderOut.Services.order
             var response = _mapper.Map<List<Order>>(orders);
             return response;
         }
+
+        public async Task<List<Order>> GetAllOrdersForBill( int billId)
+        {
+            var orders = await _orderRepository.GetAllOrdersForBill(billId);
+            var response = _mapper.Map<List<Order>>(orders);
+            return response;
+        }
+
 
         public async Task<Order> GetOrder(int orderId)
         {
@@ -49,11 +59,23 @@ namespace OrderOut.Services.order
             Bill bill;
             if (request.BillId == null)
             {
-                var newBill = new CreateBillDto
-                {
-                    ClientEmail = request.ClientEmail
-
-                };
+                var time = DateTime.Now.Hour;
+                var newBill = new CreateBillDto();
+                ShiftEnum shift;
+                    if (time < 12)
+                    {
+                    shift = ShiftEnum.Mañana;
+                    }
+                    else if (time >= 12 && time < 19)
+                    {
+                        shift = ShiftEnum.Tarde;
+                    }
+                    else
+                    {
+                        shift = ShiftEnum.Noche;
+                    }
+                var tableWaiter = await _tableWaiterRepository.GetTableWaiterForBill((int)request.TableId, ((int)shift));
+                newBill.TableWaiterId = tableWaiter.Id;
                 bill = await _billService.CreateBill(newBill);
                 request.BillId = bill.Id;
             }

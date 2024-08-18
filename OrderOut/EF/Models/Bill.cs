@@ -8,8 +8,12 @@ namespace OrderOut.EF.Models
         public float? Amount { get; set; }
         public float? Tip { get; set; }
         public DateTime Date { get; set; }
-        public WayToPayEnum WayToPay { get; set; }
-        public string ClientEmail { get; set; }
+        public int WayToPay { get; set; }
+        public bool IsPaid { get; set; } = false;
+        public long TableWaiterId { get; set; }
+
+        [ForeignKey("TableWaiterId")]
+        public virtual TableWaiter TableWaiter { get; set; }
 
     }
 }

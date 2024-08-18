@@ -5,21 +5,14 @@ namespace OrderOut.EF.Models
 {
     public class Order : BaseEntity
     {   
-        public long UserId { get; set; }
+        public DateTime Requested { get; set; }
 
-        public DateTime DateTime { get; set; }
-
-        public long TableId { get; set; }
+        public DateTime Delivered { get; set; }
 
         public long BillId { get; set; }
 
         public OrderStatusEnum Status { get; set; }
 
-        [ForeignKey("UserId")]
-        public User User { get; set; }
-
-        [ForeignKey("TableId")]
-        public virtual Table Table { get; set; }
 
         [ForeignKey("BillId")]
         public virtual Bill Bill { get; set; }

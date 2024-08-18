@@ -10,7 +10,7 @@ namespace OrderOut.Services.table
         Task<List<Table>> GetAllTables();
         Task<Table> GetTable(int tableId);
         Task<bool> CreateTable(TableDto request);
-        Task<bool> AssignTablesToWaiters(TableWaiterDto request);
+        //Task<bool> AssignTablesToWaiters(TableWaiterDto request);
         Task<bool> UpdateTable(TableDto request);
         Task<bool> DeleteTable(int tableId);
     }

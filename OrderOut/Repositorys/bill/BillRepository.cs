@@ -17,15 +17,16 @@ namespace OrderOut.Repositorys
             _context = context;
         }
 
-        //public async Task<List<Bill>> GetAllOrders()
-        //{
-        //    return await _context.Bills.ToListAsync();
-        //}
-
         public async Task<Bill?> GetBill(long billId)
         {
-            var bill = await _context.Bills.FirstOrDefaultAsync(o => o.Id == billId);
+            var bill = await _context.Bills.Include(x => x.TableWaiter).FirstOrDefaultAsync(o => o.Id == billId);
             return bill;
+        }
+
+
+        public async Task<List<Bill>> GetBills(DateTime startDate, DateTime endDate)
+        {
+            return await _context.Bills.Include(x=> x.TableWaiter).Where(x=> (x.Date).Date >= startDate.Date && (x.Date).Date <= endDate.Date).ToListAsync();
         }
 
         public async Task<Bill> CreateBill(Bill bill)

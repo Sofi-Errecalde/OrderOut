@@ -42,12 +42,12 @@ namespace OrderOut.Services.table
             return response;
         }
 
-        public async Task<bool> AssignTablesToWaiters(TableWaiterDto request)
-        {
-            var newTable = _mapper.Map<Table>(request);
-            var response = await _tableRepository.CreateTable(newTable);
-            return response;
-        }
+        //public async Task<bool> AssignTablesToWaiters(TableWaiterDto request)
+        //{
+        //    var newTableWaiter = _mapper.Map<TableWaiter>(request);
+        //    var response = await _tableRepository.CreateTableWaiter(newTableWaiter);
+        //    return response;
+        //}
 
         public async Task<bool> UpdateTable(TableDto request)
         {

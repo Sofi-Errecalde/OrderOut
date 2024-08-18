@@ -3,6 +3,7 @@ using OrderOut.EF.Models;
 using OrderOut.Enums;
 using OrderOut.Services.order;
 using OrderOut.Services.bill;
+using OrderOut.DtosOU.Dtos;
 
 namespace OrderOut.Controllers
 {
@@ -17,19 +18,19 @@ namespace OrderOut.Controllers
             _billService = billService;
         }
 
-        //[HttpGet]
-        //[Route("GetBill")]
-        //public async Task<Bill> GetBill(int billId)
-        //{
-        //    return await _billService.GetBill(billId);
-        //}
+        [HttpGet]
+        [Route("GetBillBy Id")]
+        public async Task<Bill> GetBilById(long billId)
+        {
+            return await _billService.GetBill(billId);
+        }
 
-        //[HttpGet]
-        //[Route("AllBills")]
-        //public async Task<List<Order>> AllBills()
-        //{
-        //    return await _billService.GetAllBills();
-        //}
+        [HttpGet]
+        [Route("GetBills")]
+        public async Task<BillDto> GetBills(DateTime startDate, DateTime endDate)
+        {
+            return await _billService.GetBills(startDate,endDate);
+        }
 
         //[HttpPost]
         //[Route("CreateOrder")]
@@ -38,12 +39,20 @@ namespace OrderOut.Controllers
         //    return await _billService.CreateBill(order);
         //}
 
-        //[HttpPut]
-        //[Route("UpdateOrder")]
-        //public async Task<bool> UpdateOrderStatus(BillStatusDto request)
-        //{
-        //    return await _billService.UpdateOrderStatus(request);
-        //}
+        [HttpPut]
+        [Route("UpdateBill")]
+        public async Task<Bill> UpdateBill(Bill request)
+        {
+            return await _billService.UpdateBill(request);
+        }
+
+        [HttpPut]
+        [Route("UpdateBillPaid")]
+        public async Task<Bill> UpdateWayToPayBillPaid(int billId, bool isPaid, WayToPayEnum wayToPay)
+        {
+            return await _billService.UpdateBillPaid(billId, isPaid, wayToPay);
+        }
+
         //[HttpDelete]
         //[Route("DeleteOrder")]
         //public async Task<bool> DeleteOrder(int orderId)

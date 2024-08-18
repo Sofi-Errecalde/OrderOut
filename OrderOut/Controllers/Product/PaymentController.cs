@@ -10,6 +10,8 @@ using OrderOut.Services.order;
 using OrderOut.Services.user;
 using static System.Net.WebRequestMethods;
 using OrderOut.Enums;
+using OrderOut.Services.bill;
+using OrderOut.EF.Models;
 
 namespace OrderOut.Controllers
 {
@@ -17,37 +19,43 @@ namespace OrderOut.Controllers
     [Route("[controller]")]
     public class PaymentController : Controller
     {
-        private readonly OrderService _orderService;
+        private readonly BillService _billService;
         private readonly UserService _userService;
+        private readonly OrderService _orderService;
 
-        public PaymentController(OrderService orderService, UserService userService)
+        public PaymentController(BillService billService, OrderService orderService, UserService userService)
         {
             _userService = userService;
+            _billService = billService;
             _orderService = orderService;
             MercadoPagoConfig.AccessToken = "APP_USR-754556657198966-061718-54405e00f534ba1d9bc6d96985720195-1863527942";
         }
 
         [HttpPost("create-order/{id}")]
-        public async Task<IActionResult> CreateOrder(int id)
+        public async Task<IActionResult> CreateBill(int id)
         {
-            var orderDetails = await _orderService.GetOrder(id);
-           /* if (orderDetails == null || orderDetails.Status != OrderStatusEnum.Entregado)
+            var bill = await _billService.GetBill(id);
+            var ordersDetails = await _orderService.GetAllOrdersForBill((int)bill.Id);
+            /* if (orderDetails == null || orderDetails.Status != OrderStatusEnum.Entregado)
+             {
+                 return BadRequest("Solo es posible pagar un pedido en estado Entregado");
+             }*/
+            var items = new List<PreferenceItemRequest>();
+            foreach (var order in ordersDetails)
             {
-                return BadRequest("Solo es posible pagar un pedido en estado Entregado");
-            }*/
-            Console.WriteLine("Hello, World!");
-            Console.WriteLine(orderDetails);
-            var items = orderDetails.Products.Select(detail => new PreferenceItemRequest
-            {
-                Id = detail.Id.ToString(),
-                UnitPrice = (decimal)detail.Product.Price,
-                CurrencyId = "ARS",
-                Quantity = detail.Quantity,
-                Title = $"Pedido Nro: {detail.OrderId}",
-                Description = $"Pedido Nro: {id}"
-            }).ToList();
+                var orderItems = order.Products.Select(detail => new PreferenceItemRequest
+                {
+                    Id = detail.Id.ToString(),
+                    UnitPrice = (decimal)detail.Product.Price,
+                    CurrencyId = "ARS",
+                    Quantity = detail.Quantity,
+                    Title = $"Pedido Nro: {detail.OrderId}",
+                    Description = $"Pedido Nro: {id}"
+                }).ToList();
+                items.AddRange(orderItems);
+            }
 
-            var payer = await _userService.GetUser((int)orderDetails.UserId);
+            //var payer = await _userService.GetUser((int)orderDetails.UserId);
             var backUrls = new PreferenceBackUrlsRequest
             {
                 Success = "https://www.google.com/",
@@ -60,7 +68,7 @@ namespace OrderOut.Controllers
                 Items = items,
                 Payer = new PreferencePayerRequest
                 {
-                    Name = payer.Name,
+                    //Name = payer.Name,
                     Email = "test_user_984695644@testuser.com"
                 },
                 BackUrls = backUrls,
@@ -95,7 +103,7 @@ namespace OrderOut.Controllers
                     var paymentInfo = await paymentClient.GetAsync(payment["data.id"]);
                     if (paymentInfo != null)
                     {
-                        await _orderService.updateStatus(id, "Pagado");
+                        await _billService.UpdateBillPaid(id, true, WayToPayEnum.MercadoPago);
                         //await SavePaymentInfo(id, paymentInfo);
                         NotifyOrderPaid(id);
                         return NoContent();
