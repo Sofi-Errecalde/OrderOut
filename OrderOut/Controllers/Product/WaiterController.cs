@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Services.waiter;
 
@@ -31,14 +32,14 @@ namespace OrderOut.Controllers
 
         [HttpPost]
         [Route("CreateWaiter")]
-        public async Task<bool> CreateWaiter(Waiter waiter)
+        public async Task<bool> CreateWaiter(WaiterDto waiter)
         {
             return await _waiterService.CreateWaiter(waiter);
         }
 
         [HttpPut]
         [Route("UpdateWaiter")]
-        public async Task<bool> UpdateWaiter(Waiter waiter)
+        public async Task<bool> UpdateWaiter(WaiterDto waiter)
         {
             return await _waiterService.UpdateWaiter(waiter);
         }

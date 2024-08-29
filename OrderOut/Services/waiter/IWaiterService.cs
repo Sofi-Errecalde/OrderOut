@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 
 namespace OrderOut.Services.waiter
@@ -8,8 +9,8 @@ namespace OrderOut.Services.waiter
     {
         Task<List<Waiter>> GetAllWaiters();
         Task<Waiter> GetWaiter(int waiterId);
-        Task<bool> CreateWaiter(Waiter request);
-        Task<bool> UpdateWaiter(Waiter request);
+        Task<bool> CreateWaiter(WaiterDto request);
+        Task<bool> UpdateWaiter(WaiterDto request);
         Task<bool> DeleteWaiter(int waiterId);
     }
 }

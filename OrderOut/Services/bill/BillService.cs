@@ -8,6 +8,7 @@ using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Enums;
 using OrderOut.Repositorys;
+using OrderOut.Repositorys.NewFolder;
 using OrderOut.Repositorys.product;
 namespace OrderOut.Services.bill
 {
@@ -17,12 +18,14 @@ namespace OrderOut.Services.bill
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
         private readonly AppDbContext _context;
+        private readonly OrderProductRepository _orderProductRepository;
 
         public BillService(IBillRepository billRepository, IProductRepository productRepository, AppDbContext context,
-                            IMapper mapper)
+                            IMapper mapper, OrderProductRepository orderProductRepository)
         {
             _billRepository = billRepository;
             _productRepository = productRepository;
+            _orderProductRepository = orderProductRepository;
             _mapper = mapper;
             _context = context;
         }
@@ -33,34 +36,61 @@ namespace OrderOut.Services.bill
             return response;
         }
 
-        public async Task<BillDto> GetBills(DateTime startDate, DateTime endDate)
+        public async Task<List<Bill>> GetBills(DateTime startDate, DateTime endDate)
         {
             var bills = await _billRepository.GetBills(startDate, endDate);
+            return bills;
+        }
+
+
+        public async Task<StatisticsDto> GetStatistics()
+        {
+            var bills = await _billRepository.GetAll();
+
+            // Inicializar el objeto para almacenar los indicadores
             var IndicatorsDto = new IndicatorsDto();
 
+            // Calcular el ranking de métodos de pago
             var RankingWayToPayList = new List<RankingWayToPayDto>();
-            for (int i = 1; i == 4; i++)
+            for (int i = 1; i <= 4; i++)
             {
                 var RankingWayToPay = new RankingWayToPayDto()
                 {
                     WayToPay = (WayToPayEnum)i,
-                    Amount = bills.Where(x => x.WayToPay == (int)WayToPayEnum.Efectivo).Sum(x => x.Amount.Value),
-                    Quantity = bills.Where(x => x.WayToPay == (int)WayToPayEnum.Efectivo).Count()
+                    Amount = bills.Where(x => x.WayToPay == (int)(WayToPayEnum)i).Sum(x => x.Amount.HasValue ? x.Amount.Value : 0),
+                    Quantity = bills.Count(x => x.WayToPay == (int)(WayToPayEnum)i)
                 };
                 RankingWayToPayList.Add(RankingWayToPay);
-            };
-            IndicatorsDto.TotalAmount = bills.Sum(x => x.Amount.Value);
+            }
+
+            // Calcular los indicadores
+            IndicatorsDto.TotalAmount = bills.Sum(x => x.Amount.HasValue ? x.Amount.Value : 0);
             var quantity = bills.Count();
-            IndicatorsDto.AverageAmount = IndicatorsDto.TotalAmount / quantity;
-            IndicatorsDto.TotalTip = bills.Sum(x => x.Tip.Value);
+            IndicatorsDto.AverageAmount = quantity > 0 ? IndicatorsDto.TotalAmount / quantity : 0;
+            IndicatorsDto.TotalTip = bills.Sum(x => x.Tip.HasValue ? x.Tip.Value : 0);
+            IndicatorsDto.rankingWayToPayDtos = RankingWayToPayList;
 
-            var BillDto = new BillDto
+            var orderProducts = await _orderProductRepository.GetAll();
+            var RankingProducts = orderProducts
+                .GroupBy(op => op.Product)
+                .Select(g => new RankingProductosDto
+                {
+                    Product = g.Key,
+                    Quantity = g.Sum(op => op.Quantity)
+                })
+                .OrderByDescending(rp => rp.Quantity)
+                .ToList();
+
+            var StatisticsDto = new StatisticsDto
             {
-                Bills = bills,
-
+                Indicators = IndicatorsDto,
+                RankingProducts = RankingProducts
             };
-            return BillDto;
+
+            return StatisticsDto;
         }
+
+
 
         public async Task<Bill> CreateBill(CreateBillDto request)
         {   

@@ -74,7 +74,7 @@ namespace OrderOut.Services.order
                     {
                         shift = ShiftEnum.Noche;
                     }
-                var tableWaiter = await _tableWaiterRepository.GetTableWaiterForBill((int)request.TableId, ((int)shift));
+                var tableWaiter = await _tableWaiterRepository.GetTableWaiterForBill((int)request.TableId,  ((int)shift));
                 newBill.TableWaiterId = tableWaiter.Id;
                 bill = await _billService.CreateBill(newBill);
                 request.BillId = bill.Id;

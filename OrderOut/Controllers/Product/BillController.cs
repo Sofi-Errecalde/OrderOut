@@ -27,11 +27,16 @@ namespace OrderOut.Controllers
 
         [HttpGet]
         [Route("GetBills")]
-        public async Task<BillDto> GetBills(DateTime startDate, DateTime endDate)
+        public async Task<List<Bill>> GetBills(DateTime startDate, DateTime endDate)
         {
             return await _billService.GetBills(startDate,endDate);
         }
-
+        [HttpGet]
+        [Route("GetStatistics")]
+        public async Task<StatisticsDto> GetStatistics()
+        {
+            return await _billService.GetStatistics();
+        }
         //[HttpPost]
         //[Route("CreateOrder")]
         //public async Task<Order> CreateOrder(NewOrderDto order)

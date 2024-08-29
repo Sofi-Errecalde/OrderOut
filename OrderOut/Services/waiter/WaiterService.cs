@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using OrderOut.DtosOU.Dtos;
 using OrderOut.EF.Models;
 using OrderOut.Repositorys;
 
@@ -32,14 +33,14 @@ namespace OrderOut.Services.waiter
             return response;
         }
 
-        public async Task<bool> CreateWaiter(Waiter request)
+        public async Task<bool> CreateWaiter(WaiterDto request)
         {
             var newWaiter = _mapper.Map<Waiter>(request);
             var response = await _waiterRepository.CreateWaiter(newWaiter);
             return response;
         }
 
-        public async Task<bool> UpdateWaiter(Waiter request)
+        public async Task<bool> UpdateWaiter(WaiterDto request)
         {
             var waiter = _mapper.Map<Waiter>(request);
             var response = await _waiterRepository.UpdateWaiter(waiter);

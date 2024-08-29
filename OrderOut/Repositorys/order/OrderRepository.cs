@@ -33,6 +33,9 @@ namespace OrderOut.Repositorys
             return await _context.Orders
                 .Include(o => o.Bill)
                 .ThenInclude(o => o.TableWaiter)
+                .ThenInclude(tableWaiter => tableWaiter.Waiter)
+                 .Include(o => o.Bill)
+                .ThenInclude(o => o.TableWaiter)
                 .ThenInclude(o => o.Table)
                 .Include(o => o.Products)
                   .ThenInclude(op => op.Product)
