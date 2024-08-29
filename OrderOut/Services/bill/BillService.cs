@@ -43,9 +43,9 @@ namespace OrderOut.Services.bill
         }
 
 
-        public async Task<StatisticsDto> GetStatistics()
+        public async Task<StatisticsDto> GetStatistics(DateTime startDate, DateTime endDate)
         {
-            var bills = await _billRepository.GetAll();
+            var bills = await _billRepository.GetAll(startDate, endDate);
 
             // Inicializar el objeto para almacenar los indicadores
             var IndicatorsDto = new IndicatorsDto();

@@ -23,12 +23,13 @@ namespace OrderOut.Repositorys
             return bill;
         }
 
-        public async Task<List<Bill>> GetAll()
+        public async Task<List<Bill>> GetAll(DateTime startDate, DateTime endDate)
         {
             return await _context.Bills.Include(bill => bill.TableWaiter)
                                             .ThenInclude(tableWaiter => tableWaiter.Waiter)
                                         .Include(bill => bill.TableWaiter)
                                             .ThenInclude(tableWaiter => tableWaiter.Table)
+                                        .Where(x => (x.Date).Date >= startDate.Date && (x.Date).Date <= endDate.Date)
                                         .ToListAsync();
         }
         public async Task<List<Bill>> GetBills(DateTime startDate, DateTime endDate)

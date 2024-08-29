@@ -23,6 +23,9 @@ namespace OrderOut.Repositorys
                 .Include(o => o.Bill)
                 .ThenInclude(o => o.TableWaiter)
                 .ThenInclude(o => o.Table)
+                .Include(o => o.Bill)
+                .ThenInclude(o => o.TableWaiter)
+                .ThenInclude(o => o.Waiter)
                 .Include(o => o.Products)
                   .ThenInclude(op => op.Product)
                 .ToListAsync();

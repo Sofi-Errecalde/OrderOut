@@ -11,7 +11,7 @@ namespace OrderOut.Services.bill
         Task<Bill> CreateBill(CreateBillDto request);
         Task<Bill> UpdateBill(Bill bill);
         
-        Task<StatisticsDto> GetStatistics();
+        Task<StatisticsDto> GetStatistics(DateTime startDate, DateTime endDate);
         Task<Bill> UpdateBillPaid(int billId, bool isPaid, WayToPayEnum wayToPay);
         //Task<bool> DeleteBill(int billId);
     }

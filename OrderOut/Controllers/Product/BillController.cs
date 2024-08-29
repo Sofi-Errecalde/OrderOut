@@ -33,9 +33,9 @@ namespace OrderOut.Controllers
         }
         [HttpGet]
         [Route("GetStatistics")]
-        public async Task<StatisticsDto> GetStatistics()
+        public async Task<StatisticsDto> GetStatistics(DateTime startDate, DateTime endDate)
         {
-            return await _billService.GetStatistics();
+            return await _billService.GetStatistics(startDate, endDate);
         }
         //[HttpPost]
         //[Route("CreateOrder")]
