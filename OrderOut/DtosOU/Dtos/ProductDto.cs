@@ -10,7 +10,7 @@
         public long CategoryId { get; set; }
         public bool IsVegan { get; set; }
         public bool IsGlutenFree { get; set; }
-        public TimeOnly Making { get; set; }
+        public int Making { get; set; }
         public IFormFile? Photo { get; set; }
         public byte[]? Image { get; set; }
 
