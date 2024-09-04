@@ -18,16 +18,19 @@ namespace OrderOut.Services.order
         private readonly IProductRepository _productRepository;
         private readonly ITableWaiterRepository _tableWaiterRepository;
         private readonly IBillService _billService;
+        private readonly ITableRepository _tableRepository;
         private readonly IMapper _mapper;
         private readonly AppDbContext _context;
 
-        public OrderService(IOrderRepository orderRepository, IProductRepository productRepository, ITableWaiterRepository tableWaiterRepository, IBillService billService,AppDbContext context,
-                            IMapper mapper)
+        public OrderService(IOrderRepository orderRepository, IProductRepository productRepository, 
+            ITableWaiterRepository tableWaiterRepository, IBillService billService,
+            ITableRepository tableRepository ,AppDbContext context, IMapper mapper)
         {
             _orderRepository = orderRepository;
             _productRepository = productRepository;
             _tableWaiterRepository = tableWaiterRepository;
             _billService = billService;
+            _tableRepository = tableRepository;
             _mapper = mapper;
             _context = context;
         }
@@ -78,6 +81,8 @@ namespace OrderOut.Services.order
                 newBill.TableWaiterId = tableWaiter.Id;
                 bill = await _billService.CreateBill(newBill);
                 request.BillId = bill.Id;
+                tableWaiter.Table.State = (int)TableState.Ocupada;
+                var tableUpdate = _tableRepository.UpdateTable(tableWaiter.Table);
             }
             else
             {

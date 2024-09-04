@@ -19,7 +19,7 @@ namespace OrderOut.Repositorys
 
         public async Task<Bill?> GetBill(long billId)
         {
-            var bill = await _context.Bills.Include(x => x.TableWaiter).FirstOrDefaultAsync(o => o.Id == billId);
+            var bill = await _context.Bills.Include(x => x.TableWaiter).ThenInclude(x => x.Table).FirstOrDefaultAsync(o => o.Id == billId);
             return bill;
         }
 

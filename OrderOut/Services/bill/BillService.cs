@@ -17,17 +17,19 @@ namespace OrderOut.Services.bill
         private readonly IBillRepository _billRepository;
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
+        private readonly ITableRepository _tableRepository;
         private readonly AppDbContext _context;
         private readonly OrderProductRepository _orderProductRepository;
 
         public BillService(IBillRepository billRepository, IProductRepository productRepository, AppDbContext context,
-                            IMapper mapper, OrderProductRepository orderProductRepository)
+                            IMapper mapper, OrderProductRepository orderProductRepository, ITableRepository tableRepository)
         {
             _billRepository = billRepository;
             _productRepository = productRepository;
             _orderProductRepository = orderProductRepository;
             _mapper = mapper;
             _context = context;
+            _tableRepository = tableRepository;
         }
 
         public async Task<Bill> GetBill(long billId)
@@ -114,6 +116,8 @@ namespace OrderOut.Services.bill
             bill.IsPaid = isPaid;
             bill.WayToPay = (int)wayToPay;
             var response = await _billRepository.UpdateBill(bill);
+            bill.TableWaiter.Table.State = (int)TableState.Libre;
+            var table = _tableRepository.UpdateTable(bill.TableWaiter.Table);
             return response;
         }
 
