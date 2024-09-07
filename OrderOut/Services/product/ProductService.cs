@@ -134,5 +134,31 @@ namespace OrderOut.Services.product
             }
             return true;
         }
+
+        public async Task<bool> MassiveProductUpdate(int? category, float percentage)
+        {
+            var products = new List<Product>();
+            if (category != null)
+            {
+                products = await GetProductByCategory(category.Value);
+            }
+            else
+            {
+                products = await GetAllProducts();
+            }
+
+            foreach (var product in products) {
+            product.Price = product.Price + (product.Price * percentage);
+            }
+            try
+            {
+                await _productRepository.UpdateProductList(products);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ocurrio un error al intentar modificar el producto");
+            }
+            return true;
+        }
     }
 }

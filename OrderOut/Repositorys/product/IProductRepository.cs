@@ -15,5 +15,6 @@ namespace OrderOut.Repositorys.product
         Task<List<Product>> GetProductsByIds(List<long> productsId);
         Task<bool> DeleteProduct(int productId);
         Task<bool> UpdateProduct(Product Product);
+        Task<bool> UpdateProductList(List<Product> Products);
     }
 }

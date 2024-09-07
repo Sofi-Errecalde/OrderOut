@@ -17,5 +17,6 @@ namespace OrderOut.Services.product
         Task<List<Product>> GetProductByCategory(int categoryId);
         Task<bool> DeleteProduct(int productId);
         Task<bool> UpdateProduct(ProductDto request);
+        Task<bool> MassiveProductUpdate(int? category, float percentage);
     }
 }

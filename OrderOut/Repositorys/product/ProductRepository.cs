@@ -90,5 +90,22 @@ namespace OrderOut.Repositorys.product
                 return false;
             }
         }
+
+        public async Task<bool> UpdateProductList(List<Product> Products)
+        {
+            try
+            {   
+                foreach (var product in Products)
+                {
+                    _appDbContext.Update(product);
+                }    
+                await _appDbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

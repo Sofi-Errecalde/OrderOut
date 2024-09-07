@@ -92,6 +92,16 @@ namespace OrderOut.Controllers
             return response;
         }
 
+        [HttpPut]
+        [Route("MassiveProductUpdate")]
+        public async Task<bool> MassiveProductUpdate(int? category, float percentage)
+        {
+            var response = await _productService.MassiveProductUpdate(category, percentage);
+
+            return response;
+        }
+
+
         [HttpDelete]
         [Route("DeleteProduct")]
         public async Task<bool> DeleteProduct(int productId)
