@@ -72,6 +72,31 @@ namespace OrderOut.Services.bill
             IndicatorsDto.TotalTip = bills.Sum(x => x.Tip.HasValue ? x.Tip.Value : 0);
             IndicatorsDto.rankingWayToPayDtos = RankingWayToPayList;
 
+
+            var ordersTables = bills
+                 .GroupBy(x => x.TableWaiter.Table)
+                .Select(r => new RankingTableDto
+                {
+                    Id = r.Key.Id,
+                    AmountPeople = r.Key.AmountPeople,
+                    Quantity = r.Count()
+                })
+                .OrderByDescending(rp => rp.Quantity)
+                .ToList();
+
+            var ordersWaiters = bills
+                 .GroupBy(x => x.TableWaiter.Waiter)
+                .Select(r => new RankingWaiterDto
+                {
+                    Id = r.Key.Id,
+                    Name = r.Key.Name,
+                    AverageSpendingPerAccount = r.Average(bill => bill.Amount.Value),
+                    AverageTipPerAccount = r.Average(bill => bill.Tip.Value),
+                    QuantityBills = r.Count()
+                })
+                .OrderByDescending(rp => rp.QuantityBills)
+                .ToList();
+
             var orderProducts = await _orderProductRepository.GetAll();
             var RankingProducts = orderProducts
                 .GroupBy(op => op.Product)
