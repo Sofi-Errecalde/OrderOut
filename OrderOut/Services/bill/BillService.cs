@@ -111,7 +111,9 @@ namespace OrderOut.Services.bill
             var StatisticsDto = new StatisticsDto
             {
                 Indicators = IndicatorsDto,
-                RankingProducts = RankingProducts
+                RankingProducts = RankingProducts,
+                RankingTables = ordersTables,
+                RankingWaiterDtos = ordersWaiters
             };
 
             return StatisticsDto;
