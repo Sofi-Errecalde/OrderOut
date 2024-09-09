@@ -10,5 +10,6 @@
         public long CategoryId { get; set; }
         public bool IsVegan { get; set; }
         public bool IsGlutenFree { get; set; }
+        public bool Hidden { get; set; }
     }
 }

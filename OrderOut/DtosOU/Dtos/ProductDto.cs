@@ -13,6 +13,7 @@
         public int Making { get; set; }
         public IFormFile? Photo { get; set; }
         public byte[]? Image { get; set; }
+        public bool Hidden { get; set; }
 
     }
 }
