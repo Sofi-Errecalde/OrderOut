@@ -115,22 +115,49 @@ namespace OrderOut.Services.order
                 orderProducts.Add(addProduct);
 
             }
-            var kitchenProducts = orderProducts.Where(p => p.Product.Category.Kitchen == true).ToList();
-            var notKitchenProducts = orderProducts.Where(p => p.Product.Category.Kitchen == false).ToList();
-            var orderKitchen = newOrder.Products.Where(p => p.Product.Category.Kitchen == true).ToList();
-            var orderNotKitchen = newOrder.Products.Where(p => p.Product.Category.Kitchen == false).ToList();
-            Order response = new Order();
-            if(kitchenProducts != null)
-            {
-                newOrder.Products = orderKitchen;
-                response = await _orderRepository.CreateOrder(newOrder, kitchenProducts);
-            }
-            if(notKitchenProducts != null)
-            {
-                newOrder.Products = orderNotKitchen;
-                response = await _orderRepository.CreateOrder(newOrder, notKitchenProducts);
-            }
             var products = await _productRepository.GetProductsByIds(productsId);
+            var kitchenProductIds = products
+                .Where(p => p.Category.Kitchen)
+                .Select(p => p.Id)
+                .ToList();
+
+            var notKitchenProductIds = products
+                .Where(p => !p.Category.Kitchen)
+                .Select(p => p.Id)
+                .ToList();
+
+            // Filtrar los orderProducts según las listas de productos separadas
+            var kitchenOrderProducts = orderProducts
+                .Where(op => kitchenProductIds.Contains(op.ProductId))
+                .ToList();
+
+            var notKitchenOrderProducts = orderProducts
+                .Where(op => notKitchenProductIds.Contains(op.ProductId))
+                .ToList();
+
+            Order response = new Order();
+            if (kitchenOrderProducts.Any())
+            {
+                var kitchenOrder = new Order
+                {
+                    Requested = newOrder.Requested,
+                    Status = newOrder.Status,
+                    BillId = newOrder.BillId
+                };
+                response = await _orderRepository.CreateOrder(kitchenOrder, kitchenOrderProducts);
+            }
+
+            // Crear la orden para productos que no son de cocina
+            if (notKitchenOrderProducts.Any())
+            {
+                var notKitchenOrder = new Order
+                {
+                    Requested = newOrder.Requested,
+                    Status = newOrder.Status,
+                    BillId = newOrder.BillId
+                };
+                response = await _orderRepository.CreateOrder(notKitchenOrder, notKitchenOrderProducts);
+            }
             foreach (var product in products)
             {
                 var orderProduct = orderProducts.FirstOrDefault(op => op.ProductId == product.Id);
