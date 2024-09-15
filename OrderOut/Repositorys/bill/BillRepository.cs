@@ -34,7 +34,9 @@ namespace OrderOut.Repositorys
         }
         public async Task<List<Bill>> GetBills(DateTime startDate, DateTime endDate)
         {
-            return await _context.Bills.Include(x=> x.TableWaiter).Where(x=> (x.Date).Date >= startDate.Date && (x.Date).Date <= endDate.Date).ToListAsync();
+            return await _context.Bills.Include(x=> x.TableWaiter).ThenInclude(tableWaiter => tableWaiter.Waiter)
+                                        .Include(bill => bill.TableWaiter)
+                                            .ThenInclude(tableWaiter => tableWaiter.Table).Where(x=> (x.Date).Date >= startDate.Date && (x.Date).Date <= endDate.Date).ToListAsync();
         }
 
         public async Task<Bill> CreateBill(Bill bill)
