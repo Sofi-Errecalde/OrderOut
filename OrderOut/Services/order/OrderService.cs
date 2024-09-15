@@ -88,6 +88,7 @@ namespace OrderOut.Services.order
             {
                 bill = await _billService.GetBill(request.BillId.Value);
             }
+
             var newOrder = _mapper.Map<Order>(request);
             var orderProducts = new List<OrderProduct>();
             float amount = 0;
@@ -100,9 +101,23 @@ namespace OrderOut.Services.order
                 addProduct.Clarification = product.Clarification;
                 addProduct.Quantity = product.Quantity;
                 orderProducts.Add(addProduct);
-                
+
             }
-            var response = await _orderRepository.CreateOrder(newOrder,orderProducts);
+            var kitchenProducts = orderProducts.Where(p => p.Product.Category.Kitchen == true).ToList();
+            var notKitchenProducts = orderProducts.Where(p => p.Product.Category.Kitchen == false).ToList();
+            var orderKitchen = newOrder.Products.Where(p => p.Product.Category.Kitchen == true).ToList();
+            var orderNotKitchen = newOrder.Products.Where(p => p.Product.Category.Kitchen == false).ToList();
+            Order response = new Order();
+            if(kitchenProducts != null)
+            {
+                newOrder.Products = orderKitchen;
+                response = await _orderRepository.CreateOrder(newOrder, kitchenProducts);
+            }
+            if(notKitchenProducts != null)
+            {
+                newOrder.Products = orderNotKitchen;
+                response = await _orderRepository.CreateOrder(newOrder, notKitchenProducts);
+            }
             var products = await _productRepository.GetProductsByIds(productsId);
             amount = bill.Amount == null?amount = 0:amount = bill.Amount.Value;
             foreach (var product in products)
