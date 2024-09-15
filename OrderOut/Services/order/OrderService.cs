@@ -56,86 +56,89 @@ namespace OrderOut.Services.order
             var response = _mapper.Map<Order>(order);
             return response;
         }
-
         public async Task<Order> CreateOrder(NewOrderDto request)
         {
             Bill bill;
+
             if (request.BillId == null)
             {
                 var time = DateTime.Now.Hour;
                 var newBill = new CreateBillDto();
                 ShiftEnum shift;
-                    if (time < 12)
-                    {
+
+                if (time < 12)
+                {
                     shift = ShiftEnum.Mañana;
-                    }
-                    else if (time >= 12 && time < 19)
-                    {
-                        shift = ShiftEnum.Tarde;
-                    }
-                    else
-                    {
-                        shift = ShiftEnum.Noche;
-                    }
-                var tableWaiter = await _tableWaiterRepository.GetTableWaiterForBill((int)request.TableId,  ((int)shift));
+                }
+                else if (time >= 12 && time < 19)
+                {
+                    shift = ShiftEnum.Tarde;
+                }
+                else
+                {
+                    shift = ShiftEnum.Noche;
+                }
+
+                // Esperar a que se obtenga el TableWaiter
+                var tableWaiter = await _tableWaiterRepository.GetTableWaiterForBill((int)request.TableId, (int)shift);
                 newBill.TableWaiterId = tableWaiter.Id;
+
+                // Esperar a que se cree la nueva factura
                 bill = await _billService.CreateBill(newBill);
                 request.BillId = bill.Id;
+
+                // Actualizar el estado de la mesa y esperar a que se complete
                 tableWaiter.Table.State = (int)TableState.Ocupada;
-                var tableUpdate = _tableRepository.UpdateTable(tableWaiter.Table);
+                await _tableRepository.UpdateTable(tableWaiter.Table); // Asegúrate de que UpdateTableAsync es un método async
             }
             else
             {
+                // Esperar a que se obtenga la factura existente
                 bill = await _billService.GetBill(request.BillId.Value);
             }
+
             var newOrder = _mapper.Map<Order>(request);
             var orderProducts = new List<OrderProduct>();
-            float amount = 0;
+            float amount = bill.Amount ?? 0; // Inicializar amount con el valor de bill.Amount o 0 si es null
             List<long> productsId = new List<long>();
+
+            // Crear la lista de OrderProduct y recolectar los IDs de productos
             foreach (var product in request.OrdersProducts)
             {
                 productsId.Add(product.ProductId);
-                var addProduct= new OrderProduct();
-                addProduct.ProductId = product.ProductId;
-                addProduct.Clarification = product.Clarification;
-                addProduct.Quantity = product.Quantity;
+                var addProduct = new OrderProduct
+                {
+                    ProductId = product.ProductId,
+                    Clarification = product.Clarification,
+                    Quantity = product.Quantity
+                };
                 orderProducts.Add(addProduct);
-                
             }
-            var response = await _orderRepository.CreateOrder(newOrder,orderProducts);
+
+            // Esperar a que se cree la orden y obtener la respuesta
+            var response = await _orderRepository.CreateOrder(newOrder, orderProducts);
+
+            // Obtener productos por IDs y calcular el monto
             var products = await _productRepository.GetProductsByIds(productsId);
-            amount = bill.Amount == null?amount = 0:amount = bill.Amount.Value;
             foreach (var product in products)
             {
-              foreach(var orderproduct in orderProducts)
-              {
-                    if(orderproduct.ProductId == product.Id)
-                    {
-                        float add = product.Price * orderproduct.Quantity;
-                        amount = amount + add;
-                        break;
-                    }
-              }
+                var orderProduct = orderProducts.FirstOrDefault(op => op.ProductId == product.Id);
+                if (orderProduct != null)
+                {
+                    float add = product.Price * orderProduct.Quantity;
+                    amount += add;
+                }
             }
+
+            // Actualizar el monto de la factura y esperar a que se complete
             bill.Amount = amount;
             var updateBill = await _billService.UpdateBill(bill);
 
             response.Bill = updateBill;
 
-
-            //if (response)
-            //{
-            //    foreach (var productId in request.OrdersProducts)
-            //    {
-            //        var orderProduct = new OrderProduct(newOrder,product);
-            //        _context.OrderProducts.Add(orderProduct);
-            //    }
-
-            //    await _context.SaveChangesAsync();
-            //}
-
             return response;
         }
+
 
         public async Task<bool> UpdateOrderStatus(OrderStatusDto request)
         {

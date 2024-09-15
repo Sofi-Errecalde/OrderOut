@@ -28,7 +28,7 @@ namespace OrderOut.Repositorys
                 .ThenInclude(o => o.Waiter)
                 .Include(o => o.Products)
                   .ThenInclude(op => op.Product)
-                  .Where(x=> x.Requested == DateTime.Today)
+    .Where(x => x.Requested >= DateTime.Today && x.Requested < DateTime.Today.AddDays(1))
                 .ToListAsync();
         }
 

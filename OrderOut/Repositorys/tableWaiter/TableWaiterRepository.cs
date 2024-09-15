@@ -31,7 +31,7 @@ namespace OrderOut.Repositorys
 
         public async Task<TableWaiter?> GetTableWaiterForBill(int tableId, int shift)
         {
-            var tableWaiter = await _context.TablesWaiters.Where(x => x.TableId == tableId && x.Shift == shift && !x.IsDeleted).FirstOrDefaultAsync();
+            var tableWaiter = await _context.TablesWaiters.Include(tw => tw.Table).Where(x => x.TableId == tableId && x.Shift == shift ).FirstOrDefaultAsync();
             return tableWaiter;
         }
 
