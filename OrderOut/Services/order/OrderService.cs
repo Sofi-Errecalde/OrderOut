@@ -56,7 +56,7 @@ namespace OrderOut.Services.order
             var response = _mapper.Map<Order>(order);
             return response;
         }
-        public async Task<Order> CreateOrder(NewOrderDto request)
+        public async Task<List<Order>> CreateOrder(NewOrderDto request)
         {
             Bill bill;
 
@@ -135,7 +135,7 @@ namespace OrderOut.Services.order
                 .Where(op => notKitchenProductIds.Contains(op.ProductId))
                 .ToList();
 
-            Order response = new Order();
+            var response = new List<Order>();
             if (kitchenOrderProducts.Any())
             {
                 var kitchenOrder = new Order
@@ -144,7 +144,8 @@ namespace OrderOut.Services.order
                     Status = newOrder.Status,
                     BillId = newOrder.BillId
                 };
-                response = await _orderRepository.CreateOrder(kitchenOrder, kitchenOrderProducts);
+                var responseKitchen = await _orderRepository.CreateOrder(kitchenOrder, kitchenOrderProducts);
+                response.Add(responseKitchen);
             }
 
             // Crear la orden para productos que no son de cocina
@@ -156,7 +157,8 @@ namespace OrderOut.Services.order
                     Status = newOrder.Status,
                     BillId = newOrder.BillId
                 };
-                response = await _orderRepository.CreateOrder(notKitchenOrder, notKitchenOrderProducts);
+                var responseNotKitchen = await _orderRepository.CreateOrder(notKitchenOrder, notKitchenOrderProducts);
+                response.Add(responseNotKitchen);
             }
             foreach (var product in products)
             {
@@ -171,8 +173,10 @@ namespace OrderOut.Services.order
             // Actualizar el monto de la factura y esperar a que se complete
             bill.Amount = amount;
             var updateBill = await _billService.UpdateBill(bill);
-
-            response.Bill = updateBill;
+            foreach(var order in response)
+            {
+                order.Bill = updateBill;
+            }
 
             return response;
         }

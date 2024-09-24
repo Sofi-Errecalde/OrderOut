@@ -33,7 +33,7 @@ namespace OrderOut.Controllers
 
         [HttpPost]
         [Route("CreateOrder")]
-        public async Task<Order> CreateOrder(NewOrderDto order)
+        public async Task<List<Order>> CreateOrder(NewOrderDto order)
         {
             return await _orderService.CreateOrder(order);
         }
