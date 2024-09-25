@@ -39,7 +39,7 @@ namespace OrderOut.Repositorys.product
 
         public async Task<List<Product>> GetAllProducts()
         {
-            return await _appDbContext.Products.Include(x => x.Category).Where(x => x.IsDeleted == false && x.Hidden == false).ToListAsync();
+            return await _appDbContext.Products.Include(x => x.Category).Where(x => x.IsDeleted == false).ToListAsync();
 
         }
 
