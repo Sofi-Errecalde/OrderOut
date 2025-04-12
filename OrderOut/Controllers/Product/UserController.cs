@@ -30,11 +30,24 @@ namespace OrderOut.Controllers
             return await _userService.GetAllUsers();
         }
 
-        [HttpPost]
-        [Route("Login")]
-        public async Task<LoginResponseDto> Login(LoginRequestDto request)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {
-            return await _userService.Login(request);
+            try
+            {
+                var response = await _userService.Login(request);
+                return Ok(response);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                // Respuesta 401 para credenciales incorrectas
+                return Unauthorized(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Manejo de otros errores
+                return StatusCode(500, new { Message = "Ocurrió un error interno", Detail = ex.Message });
+            }
         }
 
         [HttpPost]

@@ -115,6 +115,7 @@ builder.Services.AddTransient<IPaymentService, PaymentService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<PhotoService>();
+builder.Services.AddScoped<BillService>();
 
 
 builder.Services.AddTransient<ITableWaiterService, TableWaiterService>();

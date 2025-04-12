@@ -12,6 +12,8 @@ namespace OrderOut.DtosOU.Dtos
 
         public long? BillId { get; set; }
 
+        public decimal totalAmount { get; set; }
+
         public virtual ICollection<OrderProductDto> OrdersProducts { get; set; }
 
 

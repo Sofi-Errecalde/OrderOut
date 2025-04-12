@@ -17,6 +17,8 @@ namespace OrderOut.EF.Models
         [ForeignKey("BillId")]
         public virtual Bill Bill { get; set; }
 
+        public decimal totalAmount { get; set ; }
+
         public virtual  List<OrderProduct> Products { get; set; }
 
     }
